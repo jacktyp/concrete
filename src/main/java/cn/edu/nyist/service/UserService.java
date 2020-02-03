@@ -16,11 +16,30 @@ public interface UserService {
      * @param id
      * @return
      */
-    User getUser(Integer id);
+    User getUser(Integer id) throws Exception;
 
     /**
      * 查询所有用户
      * @return
      */
-    List<User> findAllUser();
+    List<User> findAllUser() throws Exception;
+
+    /**
+     * 增加用户
+     * @param user
+     */
+    void addUser(User user) throws Exception;
+
+    /**
+     * 更新用户
+     * @param user
+     */
+    void updateUser(User user) throws Exception;
+
+    /**
+     * 删除用户
+     * @param id
+     * @throws Exception
+     */
+    void deleteUser(Integer id) throws Exception;
 }
