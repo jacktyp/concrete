@@ -52,11 +52,11 @@ public class UserController {
      */
     @RequestMapping(value = "/findAllUser",method = RequestMethod.GET)
     @ResponseBody
-    public LayuiUtil findAllUser(Integer rows,Integer page){
+    public LayuiUtil findAllUser(Integer limit,Integer page){
         try{
             List<User> userList = userService.findAllUser();
             //分页
-            QueryResult<User> result = QueryUtil.getListByPageInfo(userList, rows, page);
+            QueryResult<User> result = QueryUtil.getListByPageInfo(userList, limit, page);
             return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
         }catch (Exception e){
             logger.error("查询失败");
