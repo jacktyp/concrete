@@ -11,7 +11,9 @@ public class MessageConstant {
     public static final String SAVEFAILED="保存失败!";
     public static final String SAVESUCCESS="保存成功!";
     public static final String UPDATEFAILED="更新失败!";
+    public static final String UPDATESUCCESS="更新成功!";
     public static final String DELETEFAILED="删除失败!";
+    public static final String DELETESUCCESS="删除成功!";
     public static final String QUERYFAILED="查询失败!";
     public static final String PARAMSMISS="参数缺失!";
     public static final String PARAMSMISS1="参数{0}缺失!";
