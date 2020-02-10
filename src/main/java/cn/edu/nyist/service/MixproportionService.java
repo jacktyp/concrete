@@ -1,6 +1,5 @@
 package cn.edu.nyist.service;
 
-import cn.edu.nyist.model.Mixproportion;
 import cn.edu.nyist.model.MixproportionDTO;
 
 import java.util.List;
