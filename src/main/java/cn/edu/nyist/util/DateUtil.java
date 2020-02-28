@@ -36,13 +36,27 @@ public class DateUtil {
     }
 
     /**
-     * 时间后缀
+     * 添加时间后缀
      * @param time
      * @return
      */
     public static String addBackZero(String time){
         Assert.notNull(time, "time is null");
         time = time + " 00:00:00";
+        return time;
+    }
+
+    /**
+     * 去掉时间后缀
+     * @param time
+     * @return
+     */
+    public static String cutBackZero(String time){
+        Assert.notNull(time, "time is null");
+        String[] timeSplit = time.split(" ");
+        if (timeSplit.length != 0){
+            time = timeSplit[0];
+        }
         return time;
     }
 }
