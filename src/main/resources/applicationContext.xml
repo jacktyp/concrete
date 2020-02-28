@@ -12,7 +12,7 @@
         <property name="location" value="classpath:jdbc.properties"/>
     </bean>
 
-    <!-- 配置数据源 -->
+    <!--&lt;!&ndash; 配置数据源 &ndash;&gt;-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${driver}"/>
         <property name="url" value="${url}"/>
@@ -20,26 +20,26 @@
         <property name="password" value="${password}"/>
     </bean>
 
-    <!-- mybatis和spring完美整合，不需要mybatis的配置映射文件 -->
+   <!-- &lt;!&ndash; mybatis和spring完美整合，不需要mybatis的配置映射文件 &ndash;&gt;-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <!-- 扫描model包 -->
+        <!--&lt;!&ndash; 扫描model包 &ndash;&gt;-->
         <property name="typeAliasesPackage" value="cn.edu.nyist.model"/>
-        <!-- 扫描sql配置文件:mapper需要的xml文件-->
+        <!--&lt;!&ndash; 扫描sql配置文件:mapper需要的xml文件&ndash;&gt;-->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
 
-    <!-- Mapper动态代理开发，扫描dao接口包-->
+    <!--&lt;!&ndash; Mapper动态代理开发，扫描dao接口包&ndash;&gt;-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- 注入sqlSessionFactory -->
+        <!--&lt;!&ndash; 注入sqlSessionFactory &ndash;&gt;-->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <!-- 给出需要扫描Dao接口包 -->
+        <!--&lt;!&ndash; 给出需要扫描Dao接口包 &ndash;&gt;-->
         <property name="basePackage" value="cn.edu.nyist.dao"/>
     </bean>
 
-    <!-- 事务管理 -->
+  <!--  &lt;!&ndash; 事务管理 &ndash;&gt;-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <!--数据库连接池-->
+        <!--&lt;!&ndash;数据库连接池&ndash;&gt;-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
 </beans>
