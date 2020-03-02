@@ -61,6 +61,7 @@
         <p>© 2020 搅拌站业务流程系统</p>
     </div>
     <a href="/concrete/page/Functionalpage">授权管理</a></dd>
+    <a href="/concrete/page/Functionalpage1">授权管理1</a></dd>
 </div>
 </form>
 </body>
