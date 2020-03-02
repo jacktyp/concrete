@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 18438
-  Date: 2020/2/4
-  Time: 14:37
+  Date: 2020/2/27
+  Time: 15:38
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,9 +22,16 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="schemodify">
     <form class="layui-form" action="">
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">计划编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="id" lay-verify="title" autocomplete="off" placeholder="通知表编号"
+                           class="layui-input">
+                </div>
+            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">通知表编号</label>
                 <div class="layui-input-inline">
@@ -48,15 +55,22 @@
             </div>
         </div>
 
-         <div class="layui-form-item">
-             <div class="layui-inline">
-                 <label class="layui-form-label">计划生产所需车辆编号</label>
-                 <div class="layui-input-inline">
-                     <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
-                            class="layui-input">
-                 </div>
-             </div>
-         </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">计划状态</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="state" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">计划生产所需车辆编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -103,7 +117,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

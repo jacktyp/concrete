@@ -50,7 +50,7 @@
         //展示已知数据
         table.render({
             elem: '#actpro1'
-            , url: '/test/testdata1.json'
+            //, url: '/test/testdata1.json'
             //,count: total//数据总数，从服务端得到
             , toolbar: '#actprobar1' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
@@ -64,23 +64,27 @@
                 , limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             , cols: [[ //标题栏
-                {field: 'Actualpro_id', title: '实际生产编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'Notification_additiveamount', title: '实际生产混凝土总量\kg', width: 100}
-                , {field: 'Notification_stoneamount', title: '实际生产石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '实际生产沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '实际生产水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '实际生产水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '实际生产添加剂总量\kg', width: 100}
-
-                , {field: 'Schedule_time', title: '实际生产需时间', width: 100}
-                , {field: 'Schedule_productiontime', title: '实际生产开始时间', width: 100}
-                , {field: 'Schedule_endtiime', title: '实际生产结束时间', width: 100}
-                , {field: 'Schedule_registrant', title: '实际生产登记人', width: 100}
-                , {field: 'Schedule_registranttime', title: '实际生产登记时间', width: 100}
+                {field: 'id', title: 'ID', width: 120, rowspan: 2, sort: true}
+                , {field: 'scheduleId', title: '计划编号', width: 100}
+                , {field: 'notificationId', title: '通知表编号', width: 100}
+                , {field: 'contractId', title: '合同编号', width: 100}
+                , {field: 'vehicleId', title: '车辆编号', width: 100}
+                , {field: 'stoneamount', title: '实际生产石头总量\kg', width: 100}
+                , {field: 'sandamount', title: '实际生产沙子总量\kg', width: 100}
+                , {field: 'cementamount', title: '实际生产水泥总量\kg', width: 100}
+                , {field: 'wateramount', title: '实际生产水总量\kg', width: 100}
+                , {field: 'additiveamount', title: '实际生产添加剂总量\kg', width: 100}
+                , {field: 'concreteamount', title: '实际生产混凝土总量\kg', width: 100}
+                , {field: 'time', title: '实际生产需时间', width: 100}
+                , {field: 'productiontime', title: '实际生产开始时间', width: 100}
+                , {field: 'endtiime', title: '实际生产结束时间', width: 100}
+                , {field: 'registrant', title: '实际生产登记人', width: 100}
+                , {field: 'registranttime', title: '实际生产登记时间', width: 100}
                 , {fixed: 'right', title: '操作', width: 280, align: 'center', toolbar: '#actprobar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
             , page: true //开启分页,
+            ,data:[{"id":"0000"}]
         });
         //搜素
         var $ = layui.$, active  = {
@@ -109,19 +113,37 @@
             var data = obj.data;
             if (obj.event === 'detail') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
-            } else if (obj.event === 'add') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+            } else if (obj.event === 'edit') {
+                var tr = $(obj.tr);
                 layer.open({
+                    title: '实际生产单修改',
                     type: 2,
-                    content: 'http://localhost:8080/concrete/user/Noticeadd',
-                    area: ['1000px', '500px'],
+                    content: 'http://localhost:8080/concrete/page/Actualpromodify',
+                    area: ['1200px', '620px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: 'lt'
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#actualpromodify").click();
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="scheduleId"]').val(data.scheduleId);
+                        othis.find('input[name="notificationId"]').val(data.notificationId);
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="vehicleId"]').val(data.vehicleId);
+                        othis.find('input[name="stoneamount"]').val(data.stoneamount);
+                        othis.find('input[name="sandamount"]').val(data.sandamount);
+                        othis.find('input[name="cementamount"]').val(data.cementamount);
+                        othis.find('input[name="wateramount"]').val(data.wateramount);
+                        othis.find('input[name="additiveamount"]').val(data.additiveamount);
+                        othis.find('input[name="concreteamount"]').val(data.concreteamount);
+                        othis.find('input[name="time"]').val(data.time);
+                        othis.find('input[name="productiontime"]').val(data.productiontime);
+                        othis.find('input[name="endtiime"]').val(data.endtiime);
+                        othis.find('input[name="registrant"]').val(data.registrant);
+                        othis.find('input[name="registranttime"]').val(data.registranttime);
+                    }
                 });
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

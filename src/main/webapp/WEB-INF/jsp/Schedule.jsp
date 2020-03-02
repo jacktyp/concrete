@@ -54,7 +54,7 @@
 </script>
 <script type="text/html" id="schbar2">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="add">添加生产计划单</a>
+    <a class="layui-btn layui-btn-xs" lay-event="add">添加生产计划</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
@@ -209,21 +209,14 @@
                 , limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             , cols: [[ //标题栏
-                {field: 'Notification_id', title: '通知单编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'Contract_name', title: '客户名称', width: 120, rowspan: 2}
-                , {field: 'Contract_concretegrade', title: '混泥土等级', width: 120, rowspan: 2}
-                , {field: 'Contract_amount', title: '混凝土需求量\m³', width: 160, rowspan: 2}
-                , {field: 'Mixproportion_mp', title: '混泥土配合比', width: 120, rowspan: 2}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
-                , {field: 'Notification_stoneamount', title: '石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '添加剂总量\kg', width: 100}
-
-                , {field: 'Notification_registrant', title: '通知单登记人', width: 120, rowspan: 2}
-                , {field: 'Notification_registranttime', title: '通知单登记日期', width: 210, rowspan: 2}
+                {field: 'id', title: '通知单编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'contractId', title: '合同编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'mixproportionId', title: '配合比编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'Notification_stoneamount', title: '所需石头总量\kg', width: 100}
+                , {field: 'Notification_sandamount', title: '所需沙子总量\kg', width: 100}
+                , {field: 'Notification_cementamount', title: '所需水泥总量\kg', width: 100}
+                , {field: 'Notification_wateramount', title: '所需水总量\kg', width: 100}
+                , {field: 'Notification_additiveamount', title: '所需添加剂总量\kg', width: 100}
                 , {fixed: 'right', title: '操作', width: 240, rowspan: 2, align: 'center', toolbar: '#schbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
@@ -262,13 +255,14 @@
             } else if (obj.event === 'add') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
                 layer.open({
+                    title: '添加生产计划',
                     type: 2,
-                    content: 'http://localhost:8080/concrete/user/Scheduleadd',
+                    content: 'http://localhost:8080/concrete/page/Scheduleadd',
                     area: ['1000px', '620px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: 'lt'
+                    offset:['20px', '50px']
                 });
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {

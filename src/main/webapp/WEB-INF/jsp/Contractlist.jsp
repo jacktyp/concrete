@@ -67,14 +67,21 @@
             ,cols: [[ //标题栏
                 {field: 'Contract_id', title: '合同编号', width: 120, sort: true}
                 , {field: 'Contract_name', title: '客户名称', width: 120}
+                , {field: 'Contract_address', title: '送货地址', width: 120}
                 , {field: 'Contract_amount', title: '混凝土需求量\m³', width: 160}
+                , {field: 'Contract_price', title: '混凝土单价', width: 160}
                 , {field: 'Contract_concretegrade', title: '混泥土等级', width: 120}
+                , {field: 'Contract_time', title: '签订时间', width: 120}
+                , {field: 'Contract_contact', title: '联系人', width: 120}
+                , {field: 'Contract_telephone', title: '联系电话', width: 120}
+                , {field: 'Contract_remark', title: '备注', width: 120}
                 , {field: 'Contract_registrant', title: '合同登记人', width: 120}
                 , {field: 'Contract_registranttime', title: '合同登记日期', width: 210}
                 , {fixed: 'right',title: '操作', width: 280, align: 'center', toolbar: '#conbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
             ,page: true //开启分页,id
+            ,even: true
         });
 
         //搜素
@@ -112,16 +119,39 @@
             } else if (obj.event === 'add') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
                 layer.open({
+                    title: '通知单制作',
                     type: 2,
-                    content: 'http://localhost:8080/concrete/user/Noticeadd',
+                    content: 'http://localhost:8080/concrete/page/Noticeadd',
+                    area: ['1200px', '720px'],
+                    moveOut: true,
+                    shade: [0.8, '#393D49'],
+                    scrollbar: false,
+                    offset: ['20px', '50px']
+                });
+            } else if (obj.event === 'edit') {
+                var tr = $(obj.tr);
+                layer.open({
+                    title: '合同修改',
+                    type: 2,
+                    content: 'http://localhost:8080/concrete/page/Contractmodify',
                     area: ['1200px', '620px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: 'lt'
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#contractmodify").click();
+                        othis.find('input[name="id"]').val(data.Contract_id);
+                        othis.find('input[name="name"]').val(data.Contract_name);
+                        othis.find('input[name="address"]').val(data.Contract_address);
+                        othis.find('input[name="contact"]').val(data.Contract_contact);
+                        othis.find('input[name="telephone"]').val(data.Contract_telephone);
+                        othis.find('input[name="amount"]').val(data.Contract_amount);
+                        othis.find('input[name="concretegrade"]').val(data.Contract_concretegrade);
+                        othis.find('input[name="price"]').val(data.Contract_price);
+                        othis.find('input[name="time"]').val(data.Contract_time);
+                }
                 });
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

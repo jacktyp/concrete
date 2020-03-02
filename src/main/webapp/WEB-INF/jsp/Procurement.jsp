@@ -109,13 +109,14 @@
 <script type="text/javascript">
     function addtest() {
         layer.open({
+            title:'添加采购',
             type: 2,
-            content: 'http://localhost:8080/concrete/user/Procurementadd',
+            content: 'http://localhost:8080/concrete/page/Procurementadd',
             area: ['1200px', '600px'],
             moveOut: true,
             shade: [0.8, '#393D49'],
             scrollbar: false,
-            offset: 'lt'
+            offset:['20px', '50px']
         })
     }
 </script>
@@ -176,17 +177,7 @@
             var data = obj.data;
             if (obj.event === 'detail') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
-            } else if (obj.event === 'add') {
-                layer.open({
-                    type: 2,
-                    content: 'http://localhost:8080/concrete/user/Procurementadd',
-                    area: ['1000px', '500px'],
-                    moveOut: true,
-                    shade: [0.8, '#393D49'],
-                    scrollbar: false,
-                    offset: 'lt'
-                });
-            } else if (obj.event === 'del') {
+            }  else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
                     layer.close(index);

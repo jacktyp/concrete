@@ -63,18 +63,14 @@
                 , limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             , cols: [[ //标题栏
-                {field: 'Notification_id', title: '通知单编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'Contract_name', title: '客户名称', width: 120, rowspan: 2}
-                , {field: 'Contract_concretegrade', title: '混泥土等级', width: 120, rowspan: 2}
-                , {field: 'Contract_amount', title: '混凝土需求量\m³', width: 160, rowspan: 2}
-                , {field: 'Mixproportion_mp', title: '混泥土配合比', width: 120, rowspan: 2}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
-                , {field: 'Notification_stoneamount', title: '石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '添加剂总量\kg', width: 100}
+                {field: 'id', title: '通知单编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'contractId', title: '合同编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'mixproportionId', title: '配合比编号', width: 120, rowspan: 2, sort: true}
+                , {field: 'Notification_stoneCamount', title: '所需石头总量\kg', width: 100}
+                , {field: 'Notification_sandamount', title: '所需沙子总量\kg', width: 100}
+                , {field: 'Notification_cementamount', title: '所需水泥总量\kg', width: 100}
+                , {field: 'Notification_wateramount', title: '所需水总量\kg', width: 100}
+                , {field: 'Notification_additiveamount', title: '所需添加剂总量\kg', width: 100}
 
                 , {field: 'Notification_registrant', title: '通知单登记人', width: 120, rowspan: 2}
                 , {field: 'Notification_registranttime', title: '通知单登记日期', width: 210, rowspan: 2}
@@ -113,7 +109,30 @@
             if (obj.event === 'detail') {
                 layer.msg('通知单编号：' + data.Notification_id + ' 的查看操作');
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                var tr = $(obj.tr);
+                layer.open({
+                    title: '通知单修改',
+                    type: 2,
+                    content: 'http://localhost:8080/concrete/page/Noticemodify',
+                    area: ['1200px', '620px'],
+                    moveOut: true,
+                    shade: [0.8, '#393D49'],
+                    scrollbar: false,
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#notmodify").click();
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="mixproportionId"]').val(data.mixproportionId);
+                        othis.find('input[name="stoneamount"]').val(data.Notification_stoneamount);
+                        othis.find('input[name="sandamount"]').val(data.Notification_sandamount);
+                        othis.find('input[name="cementamount"]').val(data.Notification_cementamount);
+                        othis.find('input[name="wateramount"]').val(data.Notification_wateramount);
+                        othis.find('input[name="concreteamount"]').val(data.Notification_additiveamount);
+                        othis.find('input[name="registrant"]').val(data.Notification_registrant);
+                        othis.find('input[name="registranttime"]').val(data.Notification_registranttime);
+                    }
+                });
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

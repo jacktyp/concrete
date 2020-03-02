@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 18438
-  Date: 2020/2/2
-  Time: 13:31
+  Date: 2020/2/27
+  Time: 11:31
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,9 +22,16 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="notmodify">
     <form class="layui-form" action="/concrete/user1/addUser" method="post">
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">通知单编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="" lay-verify="title" autocomplete="off" placeholder=""
+                           class="layui-input">
+                </div>
+            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">合同编号</label>
                 <div class="layui-input-inline">
@@ -36,57 +43,6 @@
                 <label class="layui-form-label">配合比编号</label>
                 <div class="layui-input-inline">
                     <input type="text" name="mixproportionId" lay-verify="title" autocomplete="off" placeholder=""
-                           class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">客户名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="客户名称"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">客户地址</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入详细地址"
-                           class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">混凝土计划需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">混凝土强度等级</label>
-                <div class="layui-input-inline">
-                    <%--<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="如：A15、A20、C10、C15..."
-                           class="layui-input">--%>
-                    <select name="modules" lay-verify="title" lay-search="">
-                        <option value="">直接选择或搜索选择</option>
-                        <option value="1">A10</option>
-                        <option value="2">A12</option>
-                        <option value="3">A20</option>
-                        <option value="5">C15</option>
-                        <option value="6">C20</option>
-                        <option value="7">C25</option>
-                        <option value="8">C30</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">强度对应配合比</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="1：1：0.9：0.2"
                            class="layui-input">
                 </div>
             </div>
@@ -137,14 +93,6 @@
             </div>
         </div>
 
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">合同备注</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-            </div>
-        </div>
-
-
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">通知单添加人</label>
@@ -164,7 +112,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

@@ -51,7 +51,7 @@
         //展示已知数据
         table.render({
             elem: '#schlist1'
-            ,url: '/test/testdata1.json'
+            //,url: '/test/testdata1.json'
             //,count: total//数据总数，从服务端得到
             ,toolbar: '#schelistbar1' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
@@ -65,21 +65,13 @@
                 ,limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             ,cols: [[ //标题栏
-                {field: 'Schedule_id', title: '生产计划编号', width: 120 ,rowspan: 2, sort: true}
-                , {field: 'Schedule_name', title: '生产计划名', width: 120 ,rowspan: 2}
-                , {field: 'Schedule_state', title: '生产状态', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_concretegrade', title: '混凝土等级', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_mp', title: '混泥土配合比', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_state', title: '是否合格',templet: '#switchTpl', width: 100}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
-                , {field: 'Notification_stoneamount', title: '计划石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '计划沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '计划水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '计划水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '计划添加剂总量\kg', width: 100}
-
-                , {field: 'Schedule_time', title: '计划生产需时间', width: 100}
+                {field: 'id', title: '生产计划编号', width: 120 ,rowspan: 2, sort: true}
+                , {field: 'name', title: '生产计划名', width: 120 ,rowspan: 2}
+                , {field: 'notificationId', title: '通知单编号', width: 120 ,rowspan: 2}
+                , {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2}
+                , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
+                , {field: 'state', title: '计划状态', width: 120 ,rowspan: 2}
+                , {field: 'time', title: '计划生产需时间', width: 120 ,rowspan: 2}
                 , {field: 'Schedule_productiontime', title: '生产开始时间', width: 100}
                 , {field: 'Schedule_endtiime', title: '生产结束时间', width: 100}
                 , {field: 'Schedule_registrant', title: '计划登记人', width: 100}
@@ -87,7 +79,20 @@
                 , {fixed: 'right',title: '操作', width: 240 ,rowspan: 2, align: 'center', toolbar: '#schelistbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
-            ,page: true //开启分页,
+            ,page: true //开启分页
+            ,data:[{
+                "id":"20001"
+                ,"name":"牧人"
+                ,"notificationId":"C20"
+                ,"contractId":"200"
+                ,"vehicleId":"1:1:0.2:0.2:0.01"
+                ,"state":"200000"
+                ,"time":"22"
+                ,"Schedule_productiontime":"2020-02-01"
+                ,"Schedule_endtiime":"40000"
+                ,"Schedule_registrant":"2000"
+                ,"Schedule_registranttime":"1"
+            }]
         });
 
         //搜素
@@ -117,19 +122,32 @@
             var data = obj.data;
             if (obj.event === 'detail') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
-            } else if (obj.event === 'add') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+            } else if (obj.event === 'edit') {
+                var tr = $(obj.tr);
                 layer.open({
+                    title: '计划表修改',
                     type: 2,
-                    content: 'http://localhost:8080/concrete/user/Actualproadd',
-                    area: ['1000px', '500px'],
+                    content: 'http://localhost:8080/concrete/page/Schedulemodify',
+                    area: ['1200px', '620px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: 'lt'
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#schemodify").click();
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="notificationId"]').val(data.notificationId);
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="name"]').val(data.name);
+                        othis.find('input[name="vehicleId"]').val(data.vehicleId);
+                        othis.find('input[name="state"]').val(data.state);
+                        othis.find('input[name="time"]').val(data.time);
+                        othis.find('input[name="productiontime"]').val(data.Schedule_productiontime);
+                        othis.find('input[name="endtiime"]').val(data.Schedule_endtiime);
+                        othis.find('input[name="registrant"]').val(data.Schedule_registrant);
+                        othis.find('input[name="registranttime"]').val(data.Schedule_registranttime);
+                    }
                 });
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

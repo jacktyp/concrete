@@ -100,9 +100,9 @@
                 <div class="layui-row">
                     <div class="layui-col-sm8 layui-carousel" id="c1">
                         <div carousel-item="">
-                            <div id="echart1" style="width: 800px;height:335px;"></div>
-                            <div id="echart2" style="width: 800px;height:335px;"></div>
-                            <div id="echart3" style="width: 800px;height:335px;"></div>
+                            <div id="echart1" style="width: 800px;height:450px;"></div>
+                            <div id="echart2" style="width: 800px;height:450px;"></div>
+                            <div id="echart3" style="width: 800px;height:450px;"></div>
                         </div>
 
                     </div>
@@ -137,6 +137,12 @@
 </body>
 
 <script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'console']);
+
     layui.use('element', function(){
         var element = layui.element;
     });
@@ -146,7 +152,7 @@
         carousel.render({
             elem: '#c1'
             ,width: '800px' //设置容器宽度
-            ,height: '335px'
+            ,height: '505px'
             ,arrow: 'always' //始终显示箭头
             //,anim: 'updown' //切换动画方式
         });
@@ -170,7 +176,6 @@
         },
         xAxis: {
             type: 'category',
-            name: '日期',
             boundaryGap: false,
             data: ['2019.1.1', '2019.1.2', '2019.1.3', '2019.1.4', '2019.1.5', '2019.1.6', '2019.1.7','2019.1.8','2019.1.9','2019.12.31']
         },

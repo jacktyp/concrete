@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 18438
-  Date: 2020/2/4
-  Time: 14:37
+  Date: 2020/3/1
+  Time: 14:12
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,92 +22,66 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="vehmodify">
     <form class="layui-form" action="">
-        <div class="layui-form-item">
+        <div class="layui-inline">
             <div class="layui-inline">
-                <label class="layui-form-label">通知表编号</label>
+                <label class="layui-form-label">id</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="notificationId" lay-verify="title" autocomplete="off" placeholder="通知表编号"
+                    <input type="test" name="id" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">合同表编号</label>
+                <label class="layui-form-label">驾驶员</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder="合同表编号"
+                    <input type="test" name="name" lay-verify="title" autocomplete="off" placeholder="姓名"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">生产计划名</label>
+                <label class="layui-form-label">车牌号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入生产计划名"
+                    <input type="text" name="vehiclenumber" lay-verify="title" autocomplete="off" placeholder="车牌号"
                            class="layui-input">
                 </div>
             </div>
         </div>
 
-         <div class="layui-form-item">
-             <div class="layui-inline">
-                 <label class="layui-form-label">计划生产所需车辆编号</label>
-                 <div class="layui-input-inline">
-                     <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
-                            class="layui-input">
-                 </div>
-             </div>
-         </div>
-
-        <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车的最大载量</label>
+            <div class="layui-input-inline">
+                <input type="text" name="maximumload" lay-verify="title" autocomplete="off" placeholder="数值"
+                       class="layui-input">
+            </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划生产所需总时间</label>
+                <label class="layui-form-label">运输价格</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="time" lay-verify="title" autocomplete="off" placeholder="请填写分钟数"
-                           class="layui-input">
+                    <input type="text" name="price" class="layui-input test-item" placeholder="运输价格">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划生产开始时间</label>
+                <label class="layui-form-label">车辆类型</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="productiontime" lay-verify="title" autocomplete="off" id="test5"
-                           placeholder="yyyy-MM-dd HH:mm:ss"
-                           class="layui-input">
+                    <input type="text" name="type" class="layui-input test-item" placeholder="车辆类型">
                 </div>
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">计划生产结束时间</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="endtiime" lay-verify="title" autocomplete="off" id="test6"
-                               placeholder="yyyy-MM-dd HH:mm:ss"
-                               class="layui-input">
-                    </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">车辆状态</label>
+                <div class="layui-input-block">
+                    <input type="text" name="state" lay-verify="title" autocomplete="off" placeholder="车辆状态"
+                           class="layui-input">
                 </div>
             </div>
         </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">生产计划添加人</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="registrant" lay-verify="title" autocomplete="off" placeholder="录入人姓名"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">生产计划添加日期</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="registranttime" class="layui-input test-item" id="test7" placeholder="yyyy-MM-dd HH:mm:ss">
-                </div>
-            </div>
-        </div>
-
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
+</div>
 </div>
 </body>
 <script>
@@ -130,15 +104,6 @@
             elem: '#test6'
             , type: 'datetime'
             , eventElem: '#test6-1'
-            , trigger: 'click'
-            //,lang: 'en'
-        });
-
-        //日期时间选择器
-        laydate.render({
-            elem: '#test7'
-            , type: 'datetime'
-            , eventElem: '#test7-1'
             , trigger: 'click'
             //,lang: 'en'
         });

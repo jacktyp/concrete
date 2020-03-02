@@ -23,7 +23,6 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <h2 style="color:#000000;padding: 20px">模拟实际生产数据填写</h2>
     <form class="layui-form" action="">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -156,8 +155,9 @@
 <script type="text/javascript">
     function addtest() {
         layer.open({
+            title: '添加运输单',
             type: 2,
-            content: 'http://localhost:8080/concrete/user/Transportationadd',
+            content: 'http://localhost:8080/concrete/page/Transportationadd',
             area: ['1000px', '500px'],
             moveOut: true,
             shade: [0.8, '#393D49'],

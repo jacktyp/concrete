@@ -75,13 +75,14 @@
 <script type="text/javascript">
     function addtest() {
         layer.open({
+            title:'添加车辆',
             type: 2,
-            content: 'http://localhost:8080/concrete/user/Vehicleadd',
+            content: 'http://localhost:8080/concrete/page/Vehicleadd',
             area: ['1200px', '600px'],
             moveOut: true,
             shade: [0.8, '#393D49'],
             scrollbar: false,
-            offset: 'lt'
+            offset: ['20px', '50px']
         })
     }
 </script>
@@ -92,7 +93,7 @@
         //展示已知数据
         table.render({
             elem: '#veh1'
-            ,url: '/test/testdata1.json'
+            //,url: '/test/testdata1.json'
             //,count: total//数据总数，从服务端得到
             ,toolbar: '#vehbar1' //开启头部工具栏，并为其绑定左侧模板
             ,method: 'post'
@@ -101,17 +102,26 @@
                 ,limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             ,cols: [[ //标题栏
-                {field: 'Vehicle_id', title: '车辆编号', width: 120, sort: true}
-                , {field: 'Vehicle_vehiclenumber', title: '车牌号', width: 120}
-                , {field: 'Vehicle_name', title: '驾驶员', width: 160}
-                , {field: 'Vehicle_maximumload', title: '车最大载量', width: 120}
+                {field: 'id', title: 'ID', width: 120, sort: true}
+                , {field: 'vehiclenumber', title: '车牌号', width: 120}
+                , {field: 'name', title: '驾驶员', width: 160}
+                , {field: 'maximumload', title: '车最大载量', width: 120}
 
-                , {field: 'Vehicle_state', title: '车状态', width: 120}
-                , {field: 'Vehicle_type', title: '车类型', width: 210}
-                , {field: 'Vehicle_price', title: '运输价格', width: 120}
+                , {field: 'state', title: '车状态', width: 120}
+                , {field: 'type', title: '车类型', width: 210}
+                , {field: 'price', title: '运输价格', width: 120}
                 , {fixed: 'right',title: '操作', width: 280, align: 'center', toolbar: '#vehbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,page: true //开启分页,
+            ,data:[{
+                "id":"1"
+                ,"vehiclenumber":"2"
+                ,"name":"3"
+                ,"maximumload":"4"
+                ,"state":"5"
+                ,"type":"1"
+                ,"price":"7"
+            }]
         });
 
         //监听工具条
@@ -120,7 +130,26 @@
             if (obj.event === 'detail') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                layer.open({
+                    title: '车辆信息修改',
+                    type: 2,
+                    content: 'http://localhost:8080/concrete/page/Vehiclemodify',
+                    area: ['1200px', '620px'],
+                    moveOut: true,
+                    shade: [0.8, '#393D49'],
+                    scrollbar: false,
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#vehmodify").click();
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="vehiclenumber"]').val(data.vehiclenumber);
+                        othis.find('input[name="name"]').val(data.name);
+                        othis.find('input[name="maximumload"]').val(data.maximumload);
+                        othis.find('input[name="state"]').val(data.state);
+                        othis.find('input[name="type"]').val(data.type);
+                        othis.find('input[name="price"]').val(data.price);
+                    }
+                });
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

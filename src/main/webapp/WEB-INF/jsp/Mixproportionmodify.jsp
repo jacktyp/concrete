@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 18438
-  Date: 2020/2/3
-  Time: 14:02
+  Date: 2020/3/1
+  Time: 14:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,9 +22,16 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="mixmodify">
     <form class="layui-form" action="">
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">实验编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="" lay-verify="title" autocomplete="off" placeholder="ID"
+                           class="layui-input">
+                </div>
+            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">实验名称</label>
                 <div class="layui-input-inline">
@@ -89,7 +96,8 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">实验备注</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" name="remark" class="layui-textarea"></textarea>
+                    <input type="text" name="remark" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
                 </div>
             </div>
 
@@ -112,10 +120,11 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
+        </div>
     </form>
 </div>
 </body>

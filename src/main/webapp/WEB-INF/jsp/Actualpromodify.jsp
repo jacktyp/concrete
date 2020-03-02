@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 18438
-  Date: 2020/2/4
-  Time: 14:37
+  Date: 2020/2/27
+  Time: 16:05
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,52 +22,95 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-fluid" id="actualpromodify">
     <form class="layui-form" action="">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">通知表编号</label>
+                <label class="layui-form-label">实际生产编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="notificationId" lay-verify="title" autocomplete="off" placeholder="通知表编号"
+                    <input type="text" name="id" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">合同表编号</label>
+                <label class="layui-form-label">计划生产编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder="合同表编号"
+                    <input type="text" name="scheduleId" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">生产计划名</label>
+                <label class="layui-form-label">通知单编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入生产计划名"
+                    <input type="text" name="notificationId" lay-verify="title" autocomplete="off" placeholder=""
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">合同编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
         </div>
 
-         <div class="layui-form-item">
-             <div class="layui-inline">
-                 <label class="layui-form-label">计划生产所需车辆编号</label>
-                 <div class="layui-input-inline">
-                     <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
-                            class="layui-input">
-                 </div>
-             </div>
-         </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">计划生产所需总时间</label>
+                <label class="layui-form-label">实际生产混凝土使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="concreteamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产石头使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="stoneamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产沙子使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="sandamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产水泥使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="cementamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产水使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="wateramount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产添加剂使用总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="additiveamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">实际生产的时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="time" lay-verify="title" autocomplete="off" placeholder="请填写分钟数"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划生产开始时间</label>
+                <label class="layui-form-label">实际生产开始时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="productiontime" lay-verify="title" autocomplete="off" id="test5"
                            placeholder="yyyy-MM-dd HH:mm:ss"
@@ -75,7 +118,7 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">计划生产结束时间</label>
+                    <label class="layui-form-label">实际生产结束时间</label>
                     <div class="layui-input-inline">
                         <input type="text" name="endtiime" lay-verify="title" autocomplete="off" id="test6"
                                placeholder="yyyy-MM-dd HH:mm:ss"
@@ -87,29 +130,57 @@
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">生产计划添加人</label>
+                <label class="layui-form-label">实际生产添加人</label>
                 <div class="layui-input-inline">
                     <input type="text" name="registrant" lay-verify="title" autocomplete="off" placeholder="录入人姓名"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">生产计划添加日期</label>
+                <label class="layui-form-label">实际生产添加日期</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="registranttime" class="layui-input test-item" id="test7" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="registranttime" class="layui-input test-item" id="test7"
+                           placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">实际生产车辆信息添加</label>
+            <%--<div class="layui-input-block">
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder=""
+                       class="layui-input">
+            </div>--%>
+            <button type="button" onclick="addtest();" class="layui-btn layui-btn-normal layui-btn-lg layui-btn-radius">
+                运输单添加
+            </button>
+
+        </div>
+
+        <div class="layui-form-item">
             <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
 </div>
 </body>
+<script type="text/javascript">
+    function addtest() {
+        layer.open({
+            title: '添加运输单',
+            type: 2,
+            content: 'http://localhost:8080/concrete/page/Transportationadd',
+            area: ['1000px', '500px'],
+            moveOut: true,
+            shade: [0.8, '#393D49'],
+            scrollbar: false,
+            offset: 'lt'
+        })
+
+    }
+</script>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form
@@ -130,15 +201,6 @@
             elem: '#test6'
             , type: 'datetime'
             , eventElem: '#test6-1'
-            , trigger: 'click'
-            //,lang: 'en'
-        });
-
-        //日期时间选择器
-        laydate.render({
-            elem: '#test7'
-            , type: 'datetime'
-            , eventElem: '#test7-1'
             , trigger: 'click'
             //,lang: 'en'
         });
