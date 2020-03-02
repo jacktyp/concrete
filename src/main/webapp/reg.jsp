@@ -47,10 +47,7 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-nickname"></label>
-                    <input type="text" name="userType" lay-verify="nickname" placeholder="昵称" class="layui-input">
-                </div>
-                <div class="layui-form-item">
-                    <input type="checkbox" name="agreement" lay-skin="primary" title="同意用户协议" checked>
+                    <input type="text" name="realname" lay-verify="nickname" placeholder="真实姓名" class="layui-input">
                 </div>
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-reg-submit">注 册</button>
