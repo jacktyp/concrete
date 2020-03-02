@@ -201,6 +201,8 @@ public class ContractDTO {
             //签订时间 登记时间设置
             String timeToString = DateUtil.convertTimeToString(time);
             String registranttimeToString = DateUtil.convertTimeToString(registranttime);
+            timeToString = DateUtil.cutBackZero(timeToString);
+            registranttimeToString = DateUtil.cutBackZero(registranttimeToString);
             this.setTime(timeToString);
             this.setRegistranttime(registranttimeToString);
         } catch (Exception e) {
@@ -221,6 +223,8 @@ public class ContractDTO {
             String registranttime = contractDTO.getRegistranttime();
             BeanUtils.copyProperties(contractDTO, contract , "time" , "registranttime");
             //签订时间 登记时间设置
+            time = DateUtil.addBackZero(time);
+            registranttime = DateUtil.addBackZero(registranttime);
             Long timeToLong = DateUtil.convertTimeToLong(time);
             Long registranttimeToLong = DateUtil.convertTimeToLong(registranttime);
             contract.setTime(timeToLong);

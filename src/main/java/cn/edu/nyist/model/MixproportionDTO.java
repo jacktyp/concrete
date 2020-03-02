@@ -213,6 +213,7 @@ public class MixproportionDTO {
             BeanUtils.copyProperties(mixproportion, this , "experimenttime");
             //签订时间 登记时间设置
             String experimenttimeToString = DateUtil.convertTimeToString(experimenttime);
+            experimenttimeToString = DateUtil.cutBackZero(experimenttimeToString);
             this.setExperimenttime(experimenttimeToString);
         } catch (Exception e) {
             logger.error("转换错误", e);
@@ -231,6 +232,7 @@ public class MixproportionDTO {
             String experimenttime = mixproportionDTO.getExperimenttime();
             BeanUtils.copyProperties(mixproportionDTO, mixproportion , "experimenttime");
             //签订时间 登记时间设置
+            experimenttime = DateUtil.addBackZero(experimenttime);
             Long experimenttimeToLong = DateUtil.convertTimeToLong(experimenttime);
             mixproportion.setExperimenttime(experimenttimeToLong);
         } catch (Exception e) {
