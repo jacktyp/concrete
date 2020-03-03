@@ -28,14 +28,14 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <div class="layui-inline">
-                    <label class="layui-form-label">车辆id</label>
+                    <label class="layui-form-label">车辆编号</label>
                     <div class="layui-input-inline">
                         <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="车辆id³"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">合同id</label>
+                    <label class="layui-form-label">合同编号</label>
                     <div class="layui-input-inline">
                         <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder="合同id³"
                                class="layui-input">

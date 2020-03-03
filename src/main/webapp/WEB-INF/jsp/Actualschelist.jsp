@@ -65,21 +65,13 @@
                 ,limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             ,cols: [[ //标题栏
-                {field: 'Schedule_id', title: '生产计划编号', width: 120 ,rowspan: 2, sort: true}
-                , {field: 'Schedule_name', title: '生产计划名', width: 120 ,rowspan: 2}
-                , {field: 'Schedule_state', title: '生产状态', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_concretegrade', title: '混凝土等级', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_mp', title: '混泥土配合比', width: 120 ,rowspan: 2}
-                , {field: 'Mixproportion_state', title: '是否合格',templet: '#switchTpl', width: 100}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
-                , {field: 'Notification_stoneamount', title: '计划石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '计划沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '计划水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '计划水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '计划添加剂总量\kg', width: 100}
-
-                , {field: 'Schedule_time', title: '计划生产需时间', width: 100}
+                {field: 'id', title: '生产计划编号', width: 120 ,rowspan: 2, sort: true}
+                , {field: 'name', title: '生产计划名', width: 120 ,rowspan: 2}
+                , {field: 'notificationId', title: '通知单编号', width: 120 ,rowspan: 2}
+                , {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2}
+                , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
+                , {field: 'state', title: '计划状态', width: 120 ,rowspan: 2}
+                , {field: 'time', title: '计划生产需时间', width: 120 ,rowspan: 2}
                 , {field: 'Schedule_productiontime', title: '生产开始时间', width: 100}
                 , {field: 'Schedule_endtiime', title: '生产结束时间', width: 100}
                 , {field: 'Schedule_registrant', title: '计划登记人', width: 100}
@@ -119,13 +111,14 @@
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
             } else if (obj.event === 'add') {
                 layer.open({
+                    title: '模拟实际生产数据填写',
                     type: 2,
-                    content: 'http://localhost:8080/concrete/user/Actualproadd',
-                    area: ['1200px', '600px'],
+                    content: 'http://localhost:8080/concrete/page/Actualproadd',
+                    area: ['1200px', '700px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: 'lt'
+                    offset:  ['20px', '50px']
                 });
             } else if (obj.event === 'edit') {
                 layer.alert('编辑行：<br>' + JSON.stringify(data))

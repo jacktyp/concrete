@@ -23,9 +23,8 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <h2 style="color:#000000;padding: 10px">添加生产计划</h2>
     <form class="layui-form" action="">
-        <div class="layui-inline">
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">通知表编号</label>
                 <div class="layui-input-inline">
@@ -40,8 +39,6 @@
                            class="layui-input">
                 </div>
             </div>
-        </div>
-        <div class="layui-inline">
             <div class="layui-inline">
                 <label class="layui-form-label">生产计划名</label>
                 <div class="layui-input-inline">
@@ -50,17 +47,20 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">计划生产所需车辆编号</label>
-            <div class="layui-input-block">
-                <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
-                       class="layui-input">
-            </div>
-        </div>
+
+         <div class="layui-form-item">
+             <div class="layui-inline">
+                 <label class="layui-form-label">计划生产所需车辆编号</label>
+                 <div class="layui-input-inline">
+                     <input type="text" name="vehicleId" lay-verify="title" autocomplete="off" placeholder="计划生产所需车辆编号"
+                            class="layui-input">
+                 </div>
+             </div>
+         </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">计划生成所需时间</label>
+                <label class="layui-form-label">计划生产所需总时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="time" lay-verify="title" autocomplete="off" placeholder="请填写分钟数"
                            class="layui-input">

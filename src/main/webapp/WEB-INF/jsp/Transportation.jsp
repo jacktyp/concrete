@@ -61,13 +61,13 @@
                 ,limitName: 'limit' //每页数据量的参数名，默认：limit
             }
             ,cols: [[ //标题栏
-                {field: 'Transportation_id', title: '运输单编号', width: 120 ,rowspan: 2, sort: true}
-                , {field: 'Vehicle_id', title: '车辆编号', width: 120 ,rowspan: 2}
-                , {field: 'Transportation_load', title: '车载量', width: 120 ,rowspan: 2}
-                , {field: 'Transportation_time', title: '发车时间', width: 160 ,rowspan: 2}
-                , {field: 'Transportation_registrant', title: '运输表登记人', width: 120 ,rowspan: 2}
-                , {field: 'Transportation_registranttime', title: '运输表登记时间', width: 100}
-                , {field: 'Notification_registranttime', title: '通知单登记日期', width: 210 ,rowspan: 2}
+                {field: 'id', title: '运输单编号', width: 120 ,rowspan: 2, sort: true}
+                , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
+                , {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2}
+                , {field: 'vehicle', title: '车载量', width: 160 ,rowspan: 2}
+                , {field: 'time', title: '发车时间', width: 160 ,rowspan: 2}
+                , {field: 'registrant', title: '运输表登记人', width: 120 ,rowspan: 2}
+                , {field: 'registranttime', title: '运输表登记时间', width: 100}
                 , {fixed: 'right',title: '操作', width: 240 ,rowspan: 2, align: 'center', toolbar: '#tranbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
@@ -102,7 +102,27 @@
             if (obj.event === 'detail') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                var tr = $(obj.tr);
+                layer.open({
+                    title: '运输单修改',
+                    type: 2,
+                    content: 'http://localhost:8080/concrete/page/Transportationmodify',
+                    area: ['1200px', '620px'],
+                    moveOut: true,
+                    shade: [0.8, '#393D49'],
+                    scrollbar: false,
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#transportmodify").click();
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="vehicleId"]').val(data.vehicleId);
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="vehicle"]').val(data.vehicle);
+                        othis.find('input[name="time"]').val(data.time);
+                        othis.find('input[name="registrant"]').val(data.registrant);
+                        othis.find('input[name="registranttime"]').val(data.registranttime);
+                    }
+                });
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();

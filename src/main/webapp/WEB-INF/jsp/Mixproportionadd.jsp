@@ -23,7 +23,6 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <h2 style="color:#000000;padding: 20px">添加实验</h2>
     <form class="layui-form" action="">
         <div class="layui-form-item">
             <div class="layui-inline">

@@ -33,7 +33,56 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo"><h3>搅拌站业务流程系统</h3></div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <%--<ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>--%>
+        <%--<ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                <a href="http://www.layui.com/admin/" target="_blank" title="前台">
+                    <i class="layui-icon layui-icon-website"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a href="javascript:;" layadmin-event="refresh" title="刷新">
+                    <i class="layui-icon layui-icon-refresh-3"></i>
+                </a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords=">
+            </li>
+        </ul>--%>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/index.jsp">退出</a></li>
+        </ul>
     </div>
+    <%--<div class="layui-header">
+        <div class="layui-logo"><h3>搅拌站业务流程系统</h3></div>
+    </div>--%>
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
@@ -77,14 +126,20 @@
                     <a href="javascript:;"><i class="layui-icon">&#xe674;</i> 管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" name="pm1" id="11" title="原材料存储管理" content="/concrete/page/Procurement">原材料存储管理</a></dd>
-                        <dd><a href="javascript:;" name="pm2" id="12" title="车辆统计" content="/concrete/page/Vehicle">车辆统计</a></dd>
+                        <dd><a href="javascript:;" name="pm2" id="12" title="车辆管理" content="/concrete/page/Vehicle">车辆统计</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;"><i class="layui-icon">&#xe672;</i> 财务管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe65e;</i> 财务管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" name="f1" id="13" title="财务统计" content="/concrete/page/Finance1">财务统计</a></dd>
                         <dd><a href="javascript:;" name="f2" id="14" title="财务报表" content="/concrete/page/Finance2">财务报表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon">&#xe620;</i> 账户设置</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" name="z1" id="15" title="账户管理" content="/concrete/page/Account">账户管理</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -287,6 +342,18 @@
             element.tabChange('empTab',id)
         });
         $("[name=f2]").click(function () {
+            var id = $(this).attr("id");
+            var content = $(this).attr("content");
+            if($("li[lay-id="+id+"]").length==0){
+                element.tabAdd("empTab",{
+                    title:$(this).attr("title"),
+                    content:"<iframe src='"+content+"' class='frame' frameborder='0'></iframe>",
+                    id:id
+                })
+            }
+            element.tabChange('empTab',id)
+        });
+        $("[name=z1]").click(function () {
             var id = $(this).attr("id");
             var content = $(this).attr("content");
             if($("li[lay-id="+id+"]").length==0){

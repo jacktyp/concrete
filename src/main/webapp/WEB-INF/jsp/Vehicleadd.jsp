@@ -23,7 +23,6 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <h2 style="color:#000000;padding: 10px">添加车辆</h2>
     <form class="layui-form" action="">
         <div class="layui-inline">
             <div class="layui-inline">
