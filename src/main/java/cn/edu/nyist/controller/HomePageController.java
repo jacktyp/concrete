@@ -37,8 +37,8 @@ public class HomePageController {
             HomePageDataDTO homePageDataDTO = homePageService.getDataList();
             return LayuiUtil.newSuccess(homePageDataDTO.toString());
         }catch (Exception e){
-            logger.error("插入失败");
-            return LayuiUtil.newFaild("插入失败");
+            logger.error("首页查询失败");
+            return LayuiUtil.newFaild("首页查询失败");
         }
     }
 }
