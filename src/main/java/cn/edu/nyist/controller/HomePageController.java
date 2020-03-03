@@ -35,7 +35,7 @@ public class HomePageController {
     public LayuiUtil dataList(){
         try{
             HomePageDataDTO homePageDataDTO = homePageService.getDataList();
-            return LayuiUtil.newSuccess(homePageDataDTO.toString());
+            return LayuiUtil.newSuccess(JSON.toJSONString(homePageDataDTO));
         }catch (Exception e){
             logger.error("首页查询失败");
             return LayuiUtil.newFaild("首页查询失败");
