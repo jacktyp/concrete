@@ -32,31 +32,8 @@
                            class="layui-input">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">配合比编号</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="mixproportionId" lay-verify="title" autocomplete="off" placeholder=""
-                           class="layui-input">
-                </div>
-            </div>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">客户名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="客户名称"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">客户地址</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入详细地址"
-                           class="layui-input">
-                </div>
-            </div>
-        </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -83,67 +60,7 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">强度对应配合比</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="1：1：0.9：0.2"
-                           class="layui-input">
-                </div>
-            </div>
         </div>
-
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">计划石头需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="stoneamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划沙子需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="sandamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划水泥需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="cementamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划水需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wateramount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划添加剂需求量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="additiveamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划混凝土总量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="concreteamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">合同备注</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-            </div>
-        </div>
-
 
         <div class="layui-form-item">
             <div class="layui-inline">

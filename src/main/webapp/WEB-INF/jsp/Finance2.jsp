@@ -149,7 +149,7 @@
             elem: '#fin4'
             //,url: '/test/testdata1.json'
             //,count: total//数据总数，从服务端得到
-            ,toolbar: '#finbar3' //开启头部工具栏，并为其绑定左侧模板
+            ,toolbar: '#finbar4' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 ,layEvent: 'LAYTABLE_TIPS'

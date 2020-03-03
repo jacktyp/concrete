@@ -18,8 +18,9 @@
     <link rel="stylesheet" href="/layui/style/admin.css">
     <script src="/layui/echarts.min.js"></script>
     <script src="/layui/layui.js"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
-<body>
+<body onload="datatest();">
 
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
@@ -31,9 +32,9 @@
                     <span class="layui-badge layui-bg-blue layuiadmin-badge">天</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
-                    <p class="layuiadmin-big-font">9,999,666</p>
+                    <p class="layuiadmin-big-font">${dayOfProduction}</p>
                     <p>
-                        总计生产量
+                        月生产量
                         <span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>
                     </p>
                 </div>
@@ -135,7 +136,23 @@
     </div>
 </div>
 </body>
-
+<script type="text/javascript">
+    function datatest(){
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/concrete/homePage/dataList",
+            success: function(data){
+                console.log(data);
+                var obj1 = JSON.stringify(data)
+                //var obj1 =  JSON.parse(data);
+                alert(obj1);
+                /*var data1=$("#data").html(data);
+                var obj = JSON.parse(data1);
+                alert(data1);*/
+            }
+        });
+    }
+</script>
 <script>
     layui.config({
         base: '/static/' //静态资源所在路径
@@ -146,6 +163,7 @@
     layui.use('element', function(){
         var element = layui.element;
     });
+
     layui.use('carousel', function(){
         var carousel = layui.carousel;
         //建造实例
