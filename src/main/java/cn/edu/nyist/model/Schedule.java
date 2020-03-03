@@ -28,6 +28,8 @@ public class Schedule {
 
     /**
      * 计划状态，已完成还是未完成 state
+     * 1 已完成
+     * 0 未完成
      */
     private String state;
 

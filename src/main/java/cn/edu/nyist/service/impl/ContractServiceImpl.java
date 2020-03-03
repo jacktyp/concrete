@@ -5,11 +5,14 @@ import cn.edu.nyist.model.Contract;
 import cn.edu.nyist.model.ContractDTO;
 import cn.edu.nyist.model.ContractExample;
 import cn.edu.nyist.service.ContractService;
+import cn.edu.nyist.util.DateUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Classname ContractServiceImpl
@@ -59,4 +62,79 @@ public class ContractServiceImpl implements ContractService {
     public void deleteContract(Integer id) throws Exception {
         contractMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public Integer getContractByIds(List<Integer> dayContractIdList) {
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria criteria = contractExample.createCriteria();
+        criteria.andIdIn(dayContractIdList);
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        Integer amountNum = 0;
+        if (!CollectionUtils.isEmpty(contractList)){
+            amountNum = contractList.stream()
+                    .filter(p->p.getAmount() != null)
+                    .collect(Collectors.summingInt(Contract::getAmount));
+            return amountNum;
+        }else {
+            return amountNum;
+        }
+    }
+
+    @Override
+    public List<Contract> getContractByIdList(List<Integer> dayContractIdList) {
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria criteria = contractExample.createCriteria();
+        criteria.andIdIn(dayContractIdList);
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        return contractList;
+    }
+
+    @Override
+    public Integer getDayContractProduction() {
+        Long dayTimeInMillis = DateUtil.dayTimeInMillis();
+        Long nextDayTimeInMillis = DateUtil.nextDayTimeInMillis();
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria criteria = contractExample.createCriteria();
+        criteria.andRegistranttimeGreaterThanOrEqualTo(dayTimeInMillis);
+        criteria.andRegistranttimeLessThan(nextDayTimeInMillis);
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        Integer dayNum = 0;
+        if (!CollectionUtils.isEmpty(contractList)){
+            dayNum = contractList.stream()
+                    .filter(p->p.getAmount() != 0)
+                    .collect(Collectors.summingInt(Contract::getAmount));
+        }
+
+        return dayNum;
+    }
+
+    @Override
+    public Integer getMonthContractProduction() {
+        Long monthStartTime = DateUtil.getDateStampCutDay(30);
+        Long monthEndTime = DateUtil.nextDayTimeInMillis();
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria criteria = contractExample.createCriteria();
+        criteria.andRegistranttimeGreaterThan(monthStartTime);
+        criteria.andRegistranttimeLessThan(monthEndTime);
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        Integer monthNum = 0;
+        if (!CollectionUtils.isEmpty(contractList)){
+            monthNum = contractList.stream()
+                    .filter(p->p.getAmount() != 0)
+                    .collect(Collectors.summingInt(Contract::getAmount));
+        }
+
+        return monthNum;
+    }
+
+    @Override
+    public List<Contract> getContractInDate(Long startTime, Long endTime) {
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria criteria = contractExample.createCriteria();
+        criteria.andRegistranttimeGreaterThanOrEqualTo(startTime);
+        criteria.andRegistranttimeLessThanOrEqualTo(endTime);
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        return contractList;
+    }
+
 }

@@ -44,4 +44,37 @@ public interface ContractService {
      * @throws Exception
      */
     void deleteContract(Integer id) throws Exception;
+
+    /**
+     * 获取未生产的和
+     * @param dayContractIdList
+     * @return
+     */
+    Integer getContractByIds(List<Integer> dayContractIdList);
+
+    /**
+     * 根据ID获取
+     * @param dayContractIdList
+     * @return
+     */
+    List<Contract> getContractByIdList(List<Integer> dayContractIdList);
+    /**
+     * 当天
+     * @return
+     */
+    Integer getDayContractProduction();
+
+    /**
+     * 当月 近一个月
+     * @return
+     */
+    Integer getMonthContractProduction();
+
+    /**
+     * 根据时间查询数据
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return
+     */
+    List<Contract> getContractInDate(Long startTime,Long endTime);
 }
