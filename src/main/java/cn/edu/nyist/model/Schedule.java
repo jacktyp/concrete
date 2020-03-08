@@ -3,6 +3,7 @@ package cn.edu.nyist.model;
 public class Schedule {
     /**
      *  id
+     *  车辆ID先不填写（多个）
      */
     private Integer id;
 

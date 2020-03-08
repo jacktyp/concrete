@@ -1,6 +1,7 @@
 package cn.edu.nyist.service;
 
 import cn.edu.nyist.model.Actualpro;
+import cn.edu.nyist.model.ConcreteBackList;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface ActualproService {
     Integer monthOfproduction();
 
     /**
-     * 近十天数据
+     * 根据开始结束时间查询
      * @param dailyStartTime
      * @param endTime
      * @return
@@ -36,4 +37,11 @@ public interface ActualproService {
      * @return
      */
     List<Actualpro> findAll();
+
+    /**
+     * 混泥土花费
+     * @return
+     */
+    List<ConcreteBackList> findConcreteCost() throws Exception;
+
 }

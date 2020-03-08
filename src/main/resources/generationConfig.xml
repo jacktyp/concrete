@@ -48,7 +48,7 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table tableName="actualpro"></table>
+        <!--<table tableName="actualpro"></table>
         <table tableName="contract"></table>
         <table tableName="mixproportion"></table>
         <table tableName="notification"></table>
@@ -56,8 +56,10 @@
         <table tableName="schedule"></table>
         <table tableName="transportation"></table>
         <table tableName="user"></table>
-        <table tableName="vehicle"></table>
+        <table tableName="vehicle"></table>-->
 
+        <table tableName="financestic"></table>
+        <table tableName="material"></table>
         <!-- 有些表的字段需要指定java类型
          <table schema="" tableName="">
             <columnOverride column="" javaType="" />

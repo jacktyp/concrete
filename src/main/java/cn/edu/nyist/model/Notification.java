@@ -3,6 +3,7 @@ package cn.edu.nyist.model;
 public class Notification {
     /**
      *  id
+     *  合同ID，混泥土强度（concretegrade），混凝土总量，  通过强度查询5  1000（配合比）*100（混凝土总量）
      */
     private Integer id;
 

@@ -127,6 +127,35 @@ public class DateUtil {
     }
 
     /**
+     * 获取昨天的开始时间戳
+     * @return
+     */
+    public static Long lastDayStartMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,-1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+    /**
+     * 获取昨天的结束时间戳
+     * @return
+     */
+    public static Long lastDayEndMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,-1);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+
+    /**
      * 获取当月开始时间戳
      * @return
      */
@@ -253,8 +282,11 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        Long dayTimes = DateUtil.getDateStampCutDay(30);
+        Long dayTimes = DateUtil.lastDayStartMillis();
         System.out.println(dayTimes);
+
+        Long dayTimes1 = DateUtil.lastDayEndMillis();
+        System.out.println(dayTimes1);
 
     }
 }
