@@ -48,7 +48,7 @@
             </div>
         </div>
 
-         <div class="layui-form-item">
+        <%-- <div class="layui-form-item">
              <div class="layui-inline">
                  <label class="layui-form-label">计划生产所需车辆编号</label>
                  <div class="layui-input-inline">
@@ -56,7 +56,7 @@
                             class="layui-input">
                  </div>
              </div>
-         </div>
+         </div>--%>
 
         <div class="layui-form-item">
             <div class="layui-inline">

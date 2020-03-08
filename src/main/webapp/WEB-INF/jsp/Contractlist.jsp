@@ -118,6 +118,8 @@
                     +'合同登记日期：' + data.Contract_registranttime);
             } else if (obj.event === 'add') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+                /*1、我给你传递、混凝土强度
+                * 2、混凝土强度是否存在判断；存在了石头、沙子、水泥、添加剂、水*混凝土总量返回给我，*/
                 layer.open({
                     title: '通知单制作',
                     type: 2,

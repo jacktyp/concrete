@@ -69,7 +69,7 @@
                 , {field: 'name', title: '生产计划名', width: 120 ,rowspan: 2}
                 , {field: 'notificationId', title: '通知单编号', width: 120 ,rowspan: 2}
                 , {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2}
-                , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
+               // , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
                 , {field: 'state', title: '计划状态', width: 120 ,rowspan: 2}
                 , {field: 'time', title: '计划生产需时间', width: 120 ,rowspan: 2}
                 , {field: 'Schedule_productiontime', title: '生产开始时间', width: 100}

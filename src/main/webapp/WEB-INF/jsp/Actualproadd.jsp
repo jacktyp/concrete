@@ -140,7 +140,6 @@
             <button type="button" onclick="addtest();" class="layui-btn layui-btn-normal layui-btn-lg layui-btn-radius">
                 运输单添加
             </button>
-
         </div>
 
         <div class="layui-form-item">
@@ -222,7 +221,7 @@
         form.on('submit(demo1)', function (data) {
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
-            })
+            });
             return false;
         });
 
