@@ -62,6 +62,9 @@
     </div>
     <a href="/concrete/page/Functionalpage">授权管理</a></dd>
     <a href="/concrete/page/Functionalpage1">授权管理1</a></dd>
+    <a href="/concrete/page/Functionalpage2">授权管理2</a></dd>
+    <a href="/concrete/page/Functionalpage3">授权管理3</a></dd>
+    <a href="/concrete/page/Functionalpage4">授权管理4</a></dd>
 </div>
 </form>
 </body>

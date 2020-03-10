@@ -72,17 +72,17 @@ public class ActualproDTO {
     /**
      * 实际生产需时间 time
      */
-    private Long time;
+    private String time;
 
     /**
      * 实际生产开始时间 productiontime
      */
-    private Long productiontime;
+    private String productiontime;
 
     /**
      * 实际生产结束时间 endtiime
      */
-    private Long endtiime;
+    private String endtiime;
 
     /**
      * 实际生产登记人 registrant
@@ -182,27 +182,27 @@ public class ActualproDTO {
         this.concreteamount = concreteamount;
     }
 
-    public Long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public Long getProductiontime() {
+    public String getProductiontime() {
         return productiontime;
     }
 
-    public void setProductiontime(Long productiontime) {
+    public void setProductiontime(String productiontime) {
         this.productiontime = productiontime;
     }
 
-    public Long getEndtiime() {
+    public String getEndtiime() {
         return endtiime;
     }
 
-    public void setEndtiime(Long endtiime) {
+    public void setEndtiime(String endtiime) {
         this.endtiime = endtiime;
     }
 
@@ -252,14 +252,64 @@ public class ActualproDTO {
     public ActualproDTO transfer(Actualpro actualpro){
         try {
             Long time = actualpro.getRegistranttime();
-            BeanUtils.copyProperties(actualpro, this , "registranttime");
+            Long productiontime = actualpro.getProductiontime();
+            Long endtiime = actualpro.getEndtiime();
+            Long registranttime = actualpro.getRegistranttime();
+            BeanUtils.copyProperties(actualpro, this ,  "time","productiontime","endtiime","registranttime");
             //签订时间 登记时间设置
             String timeToString = DateUtil.convertTimeToString(time);
             timeToString = DateUtil.cutBackZero(timeToString);
-            this.setRegistranttime(timeToString);
+            this.setTime(timeToString);
+
+            String timeToString1 = DateUtil.convertTimeToString(productiontime);
+            timeToString1 = DateUtil.cutBackZero(timeToString1);
+            this.setProductiontime(timeToString1);
+
+            String timeToString2 = DateUtil.convertTimeToString(endtiime);
+            timeToString2 = DateUtil.cutBackZero(timeToString2);
+            this.setEndtiime(timeToString2);
+
+            String timeToString3 = DateUtil.convertTimeToString(registranttime);
+            timeToString3 = DateUtil.cutBackZero(timeToString3);
+            this.setRegistranttime(timeToString3);
         } catch (Exception e) {
-            logger.error("转换错误", e);
+            //logger.error("转换错误", e);
         }
         return this;
+    }
+
+    /**
+     * 转换返回
+     * @param actualproDTO
+     * @return
+     */
+    public Actualpro transferBack(ActualproDTO actualproDTO){
+        Actualpro actualpro = new Actualpro();
+        try {
+            String time = actualproDTO.getTime();
+            String productiontime = actualproDTO.getProductiontime();
+            String endtiime = actualproDTO.getEndtiime();
+            String registranttime = actualproDTO.getRegistranttime();
+            BeanUtils.copyProperties(actualproDTO, actualpro ,  "time","productiontime","endtiime","registranttime");
+            //签订时间 登记时间设置
+            time = DateUtil.addBackZero(this.time);
+            Long timeToLong = DateUtil.convertTimeToLong(time);
+            actualpro.setTime(timeToLong);
+
+            productiontime = DateUtil.addBackZero(this.productiontime);
+            Long productTime = DateUtil.convertTimeToLong(productiontime);
+            actualpro.setProductiontime(productTime);
+
+            endtiime = DateUtil.addBackZero(this.endtiime);
+            Long endtiimeToLong = DateUtil.convertTimeToLong(endtiime);
+            actualpro.setEndtiime(endtiimeToLong);
+
+            registranttime = DateUtil.addBackZero(this.registranttime);
+            Long registranttimeToLong = DateUtil.convertTimeToLong(registranttime);
+            actualpro.setRegistranttime(registranttimeToLong);
+        } catch (Exception e) {
+            //logger.error("转换错误", e);
+        }
+        return actualpro;
     }
 }

@@ -150,4 +150,24 @@ public class ProcureMentDTO {
         return this;
     }
 
+    /**
+     * 转换返回
+     * @param procureMentDTO
+     * @return
+     */
+    public Procurement transferBack(ProcureMentDTO procureMentDTO){
+        Procurement procurement = new Procurement();
+        try {
+            String time = procureMentDTO.getTime();
+            BeanUtils.copyProperties(procureMentDTO, procurement , "time" );
+            //签订时间 登记时间设置
+            time = DateUtil.addBackZero(time);
+            Long timeToLong = DateUtil.convertTimeToLong(time);
+            procurement.setTime(timeToLong);
+        } catch (Exception e) {
+            logger.error("转换错误", e);
+        }
+        return procurement;
+    }
+
 }

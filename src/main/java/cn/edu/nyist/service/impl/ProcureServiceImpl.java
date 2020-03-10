@@ -63,4 +63,21 @@ public class ProcureServiceImpl implements ProcureService {
         return procureBackListList;
     }
 
+    @Override
+    public void addProcureDTO(ProcureMentDTO procureMentDTO) {
+        Procurement procurement = new ProcureMentDTO().transferBack(procureMentDTO);
+        procurementMapper.insert(procurement);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        procurementMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void update(ProcureMentDTO procureMentDTO) {
+        Procurement procurement = new ProcureMentDTO().transferBack(procureMentDTO);
+        procurementMapper.updateByPrimaryKey(procurement);
+    }
+
 }

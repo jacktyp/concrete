@@ -26,4 +26,10 @@ public interface ProcureService {
      * @return
      */
     List<ProcureBackList> findProcureList();
+
+    void addProcureDTO(ProcureMentDTO procureMentDTO);
+
+    void delete(Integer id);
+
+    void update(ProcureMentDTO procureMentDTO);
 }

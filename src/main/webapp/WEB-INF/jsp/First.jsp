@@ -20,7 +20,7 @@
     <script src="/layui/layui.js"></script>
     <script src="/layui/jquery.min.js"></script>
 </head>
-<body onload="datatest();">
+<body>
 
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
@@ -32,15 +32,14 @@
                     <span class="layui-badge layui-bg-blue layuiadmin-badge">天</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
-                    <p class="layuiadmin-big-font">${dayOfProduction}</p>
+                    <p class="layuiadmin-big-font" id="dayOfProduction"></p>
                     <p>
                         月生产量
-                        <span class="layuiadmin-span-color">88万 <i class="layui-inline layui-icon layui-icon-flag"></i></span>
+                        <span class="layuiadmin-span-color"><span id="monthOfProduction"></span>方 <i class="layui-inline layui-icon layui-icon-flag"></i></span>
                     </p>
                 </div>
             </div>
         </div>
-
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
@@ -48,15 +47,14 @@
                     <span class="layui-badge layui-bg-cyan layuiadmin-badge">天</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
-                    <p class="layuiadmin-big-font">33,555</p>
+                    <p class="layuiadmin-big-font" id="dayOfNoProduction"></p>
                     <p>
                         最近一个月未生产量
-                        <span class="layuiadmin-span-color">2323<i class="layui-inline layui-icon layui-icon-face-cry"></i></span>
+                        <span class="layuiadmin-span-color"><span id="monthOfNoProduction"></span>方<i class="layui-inline layui-icon layui-icon-face-cry"></i></span>
                     </p>
                 </div>
             </div>
         </div>
-
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
@@ -65,15 +63,14 @@
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
 
-                    <p class="layuiadmin-big-font">66,666</p>
+                    <p class="layuiadmin-big-font" id="dayOfNewProduction"></p>
                     <p>
                         最近一个月新增量
-                        <span class="layuiadmin-span-color">15% <i class="layui-inline layui-icon layui-icon-face-smile"></i></span>
+                        <span class="layuiadmin-span-color"><span id="monthOfNewProduction"></span>方<i class="layui-inline layui-icon layui-icon-face-smile"></i></span>
                     </p>
                 </div>
             </div>
         </div>
-
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
@@ -82,16 +79,15 @@
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
 
-                    <p class="layuiadmin-big-font">999,666</p>
+                    <p class="layuiadmin-big-font">102000</p>
                     <p>
                         总收入
-                        <span class="layuiadmin-span-color">*** <i class="layui-inline layui-icon layui-icon-dollar"></i></span>
+                        <span class="layuiadmin-span-color"> <i class="layui-inline layui-icon layui-icon-rmb"></i></span>
                     </p>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="layui-col-sm12">
         <div class="layui-card">
             <div class="layui-card-header">
@@ -101,34 +97,34 @@
                 <div class="layui-row">
                     <div class="layui-col-sm8 layui-carousel" id="c1">
                         <div carousel-item="">
-                            <div id="echart1" style="width: 800px;height:450px;"></div>
-                            <div id="echart2" style="width: 800px;height:450px;"></div>
-                            <div id="echart3" style="width: 800px;height:450px;"></div>
+                            <div id="echart1" style="width: 700px;height:450px;"></div>
+                            <%--<div id="echart2" style="width: 800px;height:450px;"></div>--%>
+                            <div id="echart3" style="width: 700px;height:450px;"></div>
                         </div>
 
                     </div>
                     <div class="layui-col-sm4">
                         <div class="layuiadmin-card-list">
-                            <p class="layuiadmin-normal-font">月新增数</p>
+                            <p class="layuiadmin-normal-font">月新增</p>
                             <span>同上期增长</span>
-                            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="p1">
-                                <div class="layui-progress-bar layui-bg-green" lay-percent="30%"></div>
+                            <div class="layui-progress layui-progress-big" lay-showpercent="yes" lay-filter="p1">
+                                <div id="pp1" class="layui-progress-bar"></div>
                             </div>
                         </div>
                         <div class="layuiadmin-card-list">
-                            <p class="layuiadmin-normal-font">月总产量数</p>
+                            <p class="layuiadmin-normal-font">月总产量</p>
                             <span>同上期增长</span>
-                            <div class="layui-progress layui-progress-big" lay-showPercent="true" lay-filter="p2">
-                                <div class="layui-progress-bar" lay-percent="20%"></div>
+                            <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="p2">
+                                <div id="pp2" class="layui-progress-bar"></div>
                             </div>
                         </div>
-                        <div class="layuiadmin-card-list">
+                        <%--<div class="layuiadmin-card-list">
                             <p class="layuiadmin-normal-font">月收入</p>
                             <span>同上期增长</span>
-                            <div class="layui-progress layui-progress-big" lay-showPercent="true" lay-filter="p3">
-                                <div class="layui-progress-bar" lay-percent="25%"></div>
+                            <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="p3">
+                                <div class="layui-progress-bar" lay-percent="0%"></div>
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -136,45 +132,96 @@
     </div>
 </div>
 </body>
-<script type="text/javascript">
-    function datatest(){
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:8080/concrete/homePage/dataList",
-            success: function(data){
-                console.log(data);
-                var obj1 = JSON.stringify(data)
-                //var obj1 =  JSON.parse(data);
-                alert(obj1);
-                /*var data1=$("#data").html(data);
-                var obj = JSON.parse(data1);
-                alert(data1);*/
-            }
-        });
-    }
-</script>
+
 <script>
     layui.config({
         base: '/static/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'console']);
-
+    var contractOfTen,planOfTen,productOfTen,addressDistribution,contractDis,actualDis;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/homePage/dataList",
+        async: false,
+        success: function(data){
+            console.log(data);
+            var obj = data["msg"];
+            console.log(obj);
+            var obj2 = JSON.parse(obj);
+            /**
+             * 生产量
+             */
+            var dayOfProduction = obj2["dayOfProduction"];
+            document.getElementById("dayOfProduction").innerHTML  = dayOfProduction;
+            var monthOfProduction = obj2["monthOfProduction"];
+            document.getElementById("monthOfProduction").innerText = monthOfProduction;
+            /**
+             * 未生产量
+             */
+            var dayOfNoProduction = obj2["dayOfNoProduction"];
+            document.getElementById("dayOfNoProduction").innerText = dayOfNoProduction;
+            var monthOfNoProduction = obj2["monthOfNoProduction"];
+            document.getElementById("monthOfNoProduction").innerText = monthOfNoProduction;
+            /**
+             * 新增生产量
+             */
+            var dayOfNewProduction = obj2["dayOfNewProduction"];
+            document.getElementById("dayOfNewProduction").innerText = dayOfNewProduction;
+            var monthOfNewProduction = obj2["monthOfNewProduction"];
+            document.getElementById("monthOfNewProduction").innerText = monthOfNewProduction;
+            /**
+             * 合同，计划，实际生产 近十天的和
+             */
+            contractOfTen = obj2["contractOfTen"];
+            planOfTen = obj2["planOfTen"];
+            productOfTen = obj2["productOfTen"];
+            /**
+             * 合同表地址百分比
+             */
+            addressDistribution = obj2["addressDistribution"];
+            /**
+             * 同上期增
+             */
+            var increaseDistribution = obj2["increaseDistribution"];
+            contractDis = increaseDistribution["contractDis"];
+            actualDis = increaseDistribution["actualDis"];
+            //element.progress('p1', contractDis);
+            //element.progress('p2', actualDis);
+        }
+    });
     layui.use('element', function(){
         var element = layui.element;
+        //条形图的赋值
+        $("#pp1").attr("lay-percent",contractDis);
+        $("#pp2").attr("lay-percent",actualDis);
+        element.init();
     });
-
     layui.use('carousel', function(){
         var carousel = layui.carousel;
         //建造实例
         carousel.render({
             elem: '#c1'
-            ,width: '800px' //设置容器宽度
+            ,width: '700px' //设置容器宽度
             ,height: '505px'
             ,arrow: 'always' //始终显示箭头
-            //,anim: 'updown' //切换动画方式
         });
     });
+    var contractnum=new Array(),contracttime=new Array()
+        ,plannum=new Array(),plantime=new Array()
+        ,productnum=new Array(),producttime=new Array();
+    for(var i = 0; i < contractOfTen.length; i++){//纵横坐标表的数据的获取
+        contractnum[i]=contractOfTen[i].amountNum;
+        contracttime[i]=contractOfTen[i].timeToStr;
+    }
+    for(var i = 0; i < planOfTen.length; i++){
+        plannum[i]=planOfTen[i].amountNum;
+        plantime[i]=planOfTen[i].timeToStr;
+    }
+    for(var i = 0; i < productOfTen.length; i++){
+        productnum[i]=productOfTen[i].amountNum;
+        producttime[i]=productOfTen[i].timeToStr;
+    }
     var echart1 = echarts.init(document.getElementById('echart1'));
     var option1 = {
         title: {
@@ -195,7 +242,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['2019.1.1', '2019.1.2', '2019.1.3', '2019.1.4', '2019.1.5', '2019.1.6', '2019.1.7','2019.1.8','2019.1.9','2019.12.31']
+            data:contracttime
         },
         yAxis: {
             type: 'value',
@@ -207,25 +254,25 @@
                 type: 'line',
                 stack: '总量',
                 seriesLayoutBy: 'row',
-                data: [2000, 0, 12, 500, 0, 1000, 0,0,0,0]
+                data: contractnum
 
             },
             {
                 name: '计划生产',
                 type: 'line',
                 seriesLayoutBy: 'row',
-                data: [500, 500, 500, 500, 500, 480, 500, 500, 480, 500]
+                data: plannum
             },
             {
                 name: '实际生产',
                 type: 'line',
                 seriesLayoutBy: 'row',
-                data: [350, 390, 333, 400, 412, 450, 0,230,233,500]
+                data: productnum
             }
         ]
     };
     echart1.setOption(option1);
-
+/*
     var echart2 = echarts.init(document.getElementById('echart2'));
     var option2 = {
         title: {
@@ -280,8 +327,17 @@
         ]
 
     };
-    echart2.setOption(option2);
+    echart2.setOption(option2);*/
 
+    var addressname=new Array(),addressfre=new Array(),address=[];
+    addressname=Object.keys(addressDistribution);
+    addressfre=Object.values(addressDistribution);
+    for(i=0;i<addressname.length;i++){//进行饼状图数据格式转换
+        var json1={};
+        json1["name"]=addressname[i];
+        json1["value"]= parseFloat(addressfre[i]);
+        address.push(json1);
+    }
     var echart3 = echarts.init(document.getElementById('echart3'));
     var option3 = {
         title: {
@@ -295,11 +351,11 @@
             orient: 'vertical',
             top: 10,
             right: 10,
-            data: ['王集镇', '汲滩镇', '邓州市', '曹集', '赵庄','小李庄','其他']
+            data: addressname
         },
         series: [
             {
-                name: '地区名',
+                name: '地区',
                 type: 'pie',
                 radius: ['50%', '70%'],
                 avoidLabelOverlap: false,
@@ -321,14 +377,7 @@
                         show: false
                     }
                 },
-                data: [
-                    {value: 335, name: '汲滩镇'},
-                    {value: 310, name: '邓州市'},
-                    {value: 234, name: '曹集'},
-                    {value: 135, name: '赵庄'},
-                    {value: 1548, name: '小李庄'},
-                    {value: 1548, name: '其他'}
-                ]
+                data:address
             }
         ]
     };

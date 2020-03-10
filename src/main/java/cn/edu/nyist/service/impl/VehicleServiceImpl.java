@@ -56,4 +56,19 @@ public class VehicleServiceImpl implements VehicleService {
     public List<Vehicle> findAll() {
         return vehicleMapper.selectByExample(new VehicleExample());
     }
+
+    @Override
+    public void addScheduleDTO(Vehicle vehicle) {
+        vehicleMapper.insert(vehicle);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        vehicleMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void update(Vehicle vehicle) {
+        vehicleMapper.updateByPrimaryKey(vehicle);
+    }
 }

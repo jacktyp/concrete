@@ -52,5 +52,77 @@ public class TransportationController {
         }
     }
 
+    /**
+     * 查询所有运输单
+     * @return
+     */
+    @RequestMapping(value = "/findAllTransport",method = RequestMethod.GET)
+    @ResponseBody
+    public LayuiUtil findAllTransport(Integer limit, Integer page){
+        try{
+            List<TransportationDTO> transportDTOList = transportationService.findAllTransport();
+            //分页
+            QueryResult<TransportationDTO> result = QueryUtil.getListByPageInfo(transportDTOList, limit, page);
+            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+        }
+    }
+
+    /**
+     * 增加运输单
+     * @return
+     */
+    @RequestMapping(value = "/addTransportDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil addTransportDTO(TransportationDTO transportationDTO){
+        try{
+            transportationService.addTransportDTO(transportationDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.SAVESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+        }
+    }
+
+    /**
+     * 删除运输单
+     * @return
+     */
+    @RequestMapping(value = "/deleteTransportDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil deleteTransportDTO(Integer id){
+        try{
+            if (id == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            transportationService.delete(id);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.DELETESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+        }
+    }
+
+    /**
+     * 更新运输单
+     * @return
+     */
+    @RequestMapping(value = "/updateTransportDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil updateTransportDTO(TransportationDTO transportationDTO){
+        try{
+            if (transportationDTO.getId() == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            transportationService.update(transportationDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.UPDATESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+        }
+    }
+
 
 }

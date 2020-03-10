@@ -77,4 +77,8 @@ public interface ContractService {
      * @return
      */
     List<Contract> getContractInDate(Long startTime,Long endTime);
+
+
+    List<ContractDTO> findAllContractByState();
+
 }

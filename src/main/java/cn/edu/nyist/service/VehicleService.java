@@ -31,4 +31,10 @@ public interface VehicleService {
      * @return
      */
     List<Vehicle> findAll();
+
+    void addScheduleDTO(Vehicle vehicle);
+
+    void delete(Integer id);
+
+    void update(Vehicle vehicle);
 }

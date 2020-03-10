@@ -49,4 +49,57 @@ public class ProcureController {
         }
     }
 
+    /**
+     * 增加采购
+     * @return
+     */
+    @RequestMapping(value = "/addProcureDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil addProcureDTO(ProcureMentDTO procureMentDTO){
+        try{
+            procureService.addProcureDTO(procureMentDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.SAVESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+        }
+    }
+    /**
+     * 删除采购
+     * @return
+     */
+    @RequestMapping(value = "/deleteProcureDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil deleteProcureDTO(Integer id){
+        try{
+            if (id == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            procureService.delete(id);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.DELETESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+        }
+    }
+
+    /**
+     * 更新采购
+     * @return
+     */
+    @RequestMapping(value = "/updateProcureDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil updateProcureDTO(ProcureMentDTO procureMentDTO){
+        try{
+            if (procureMentDTO.getId() == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            procureService.update(procureMentDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.UPDATESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+        }
+    }
+
 }

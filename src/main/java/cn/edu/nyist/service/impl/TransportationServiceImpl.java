@@ -73,4 +73,29 @@ public class TransportationServiceImpl implements TransportationService {
         }
         return transportationBackListList;
     }
+
+    @Override
+    public List<TransportationDTO> findAllTransport() {
+        List<Transportation> transportation = transportationMapper.selectByExample(new TransportationExample());
+        List<TransportationDTO> TransportationDTOList = Lists.newArrayList();
+        transportation.forEach(p->TransportationDTOList.add(new TransportationDTO().transfer(p)));
+        return TransportationDTOList;
+    }
+
+    @Override
+    public void addTransportDTO(TransportationDTO transportationDTO) {
+        Transportation transportation = new TransportationDTO().transferBack(transportationDTO);
+        transportationMapper.insert(transportation);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        transportationMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void update(TransportationDTO transportationDTO) {
+        Transportation transportation = new TransportationDTO().transferBack(transportationDTO);
+        transportationMapper.updateByPrimaryKey(transportation);
+    }
 }

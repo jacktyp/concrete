@@ -1,6 +1,7 @@
 package cn.edu.nyist.service;
 
 import cn.edu.nyist.model.Actualpro;
+import cn.edu.nyist.model.ActualproDTO;
 import cn.edu.nyist.model.ConcreteBackList;
 
 import java.util.List;
@@ -44,4 +45,11 @@ public interface ActualproService {
      */
     List<ConcreteBackList> findConcreteCost() throws Exception;
 
+    List<ActualproDTO> findAllActualpro();
+
+    void addActualproDTO(ActualproDTO actualproDTO);
+
+    void delete(Integer id);
+
+    void update(ActualproDTO actualproDTO);
 }

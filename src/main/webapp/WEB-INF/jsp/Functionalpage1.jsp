@@ -63,13 +63,31 @@
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                    <%--<li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a lay-href="/concrete/page/First" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>主页</cite>
                         </a>
+                    </li>--%>
+                    <li data-name="Contractadd" class="layui-nav-item layui-nav-itemed">
+                        <a lay-href="/concrete/page/Contractadd" lay-tips="合同录入" lay-direction="2">
+                            <i class="layui-icon"></i>
+                            <cite>合同录入</cite>
+                        </a>
                     </li>
-                    <li data-name="contract" class="layui-nav-item">
+                    <li data-name="Contractlist" class="layui-nav-item layui-nav-itemed">
+                        <a lay-href="/concrete/page/Contractlist" lay-tips="合同列表" lay-direction="2">
+                            <i class="layui-icon"></i>
+                            <cite>合同列表</cite>
+                        </a>
+                    </li>
+                    <li data-name="Noticelist" class="layui-nav-item layui-nav-itemed">
+                        <a lay-href="/concrete/page/Noticelist" lay-tips="通知单列表" lay-direction="2">
+                            <i class="layui-icon"></i>
+                            <cite>通知单列表</cite>
+                        </a>
+                    </li>
+                    <%--<li data-name="contract" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="组件" lay-direction="2">
                             <i class="layui-icon layui-icon-template"></i>
                             <cite>合同统计</cite>
@@ -85,8 +103,8 @@
                                 <a lay-href="/concrete/page/Noticelist">通知单列表</a>
                             </dd>
                         </dl>
-                    </li>
-                    <li data-name="Sche" class="layui-nav-item">
+                    </li>--%>
+                   <%-- <li data-name="Sche" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="生产规划" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>
                             <cite>生产规划</cite>
@@ -158,7 +176,7 @@
                                 <a lay-href="/concrete/page/Finance2">财务报表</a>
                             </dd>
                         </dl>
-                    </li>
+                    </li>--%>
                   <%--  <li data-name="Acc" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="用户" lay-direction="2">
                             <i class="layui-icon layui-icon-user"></i>
@@ -202,7 +220,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="/concrete/page/First" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="/concrete/page/Contractadd" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

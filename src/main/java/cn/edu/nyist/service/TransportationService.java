@@ -28,4 +28,12 @@ public interface TransportationService {
      * @return
      */
     List<TransportationBackList> findVehicleCost();
+
+    List<TransportationDTO> findAllTransport();
+
+    void addTransportDTO(TransportationDTO transportationDTO);
+
+    void delete(Integer id);
+
+    void update(TransportationDTO transportationDTO);
 }

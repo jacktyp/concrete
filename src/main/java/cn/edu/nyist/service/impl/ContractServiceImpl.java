@@ -137,4 +137,14 @@ public class ContractServiceImpl implements ContractService {
         return contractList;
     }
 
+    @Override
+    public List<ContractDTO> findAllContractByState() {
+        ContractExample contractExample = new ContractExample();
+        List<Contract> contractList = contractMapper.selectByExample(contractExample);
+        //转换DTO
+        List<ContractDTO> contractDTOList = Lists.newArrayList();
+        contractList.forEach(p->contractDTOList.add(new ContractDTO().transfer(p)));
+        return contractDTOList.stream().filter(p->"0".equals(p.getRemark())).collect(Collectors.toList());
+    }
+
 }

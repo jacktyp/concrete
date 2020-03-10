@@ -12,10 +12,25 @@ public class PageController {
     public String Functionalpage(){
         return "Functionalpage";
     }
-    //功能界面二有部分功能
+    //功能界面二合同统计功能
     @RequestMapping("/Functionalpage1")
     public String Functionalpage1(){
         return "Functionalpage1";
+    }
+    //功能界面二生产管理功能
+    @RequestMapping("/Functionalpage2")
+    public String Functionalpage2(){
+        return "Functionalpage2";
+    }
+    //功能界面二实验
+    @RequestMapping("/Functionalpage3")
+    public String Functionalpage3(){
+        return "Functionalpage3";
+    }
+    //功能界面二管理
+    @RequestMapping("/Functionalpage4")
+    public String Functionalpage4(){
+        return "Functionalpage4";
     }
     //添加合同页面
     @RequestMapping("/Contractadd")

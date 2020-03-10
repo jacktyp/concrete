@@ -1,5 +1,6 @@
 package cn.edu.nyist.controller;
 
+import cn.edu.nyist.model.ActualproDTO;
 import cn.edu.nyist.model.ConcreteBackList;
 import cn.edu.nyist.service.ActualproService;
 import cn.edu.nyist.util.LayuiUtil;
@@ -31,7 +32,7 @@ public class ActualproController {
     @Autowired
     private ActualproService actualproService;
     /**
-     * 车辆费用
+     * 混凝土收入
      * @param limit
      * @param page
      * @return
@@ -48,5 +49,79 @@ public class ActualproController {
             return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
         }
     }
+    /**
+     * 查询所有实际生产
+     * @return
+     */
+    @RequestMapping(value = "/findAllActualpro",method = RequestMethod.GET)
+    @ResponseBody
+    public LayuiUtil findAllActualpro(Integer limit, Integer page){
+        try{
+            List<ActualproDTO> actualproDTOList = actualproService.findAllActualpro();
+            //分页
+            QueryResult<ActualproDTO> result = QueryUtil.getListByPageInfo(actualproDTOList, limit, page);
+            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+        }
+    }
 
+
+    /**
+     * 增加实际生产
+     * @return
+     */
+
+    @RequestMapping(value = "/addActualproDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil addActualproDTO(ActualproDTO actualproDTO){
+        try{
+            actualproService.addActualproDTO(actualproDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.SAVESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.SAVEFAILED));
+        }
+    }
+
+/**
+     * 删除实际生产
+     * @return
+     */
+
+    @RequestMapping(value = "/deleteActualproDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil deleteActualproDTO(Integer id){
+        try{
+            if (id == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            actualproService.delete(id);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.DELETESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.DELETEFAILED));
+        }
+    }
+
+/**
+     * 更新实际生产
+     * @return
+     */
+
+    @RequestMapping(value = "/updateActualproDTO",method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil updateActualproDTO(ActualproDTO actualproDTO){
+        try{
+            if (actualproDTO.getId() == null){
+                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+            }
+            actualproService.update(actualproDTO);
+            return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.UPDATESUCCESS));
+        }catch (Exception e){
+            //logger.error(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.UPDATEFAILED));
+        }
+    }
 }

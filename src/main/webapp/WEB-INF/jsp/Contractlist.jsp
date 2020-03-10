@@ -51,37 +51,42 @@
         //展示已知数据
         table.render({
             elem: '#contractlist'
-            ,url: '/test/testdata1.json'
-            //,count: total//数据总数，从服务端得到
+            ,url: 'http://localhost:8080/concrete/contract/findAllContractByState'
             ,toolbar: '#conbar1' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 ,layEvent: 'LAYTABLE_TIPS'
                 ,icon: 'layui-icon-tips'
             }]
-            ,method: 'post'
-            ,request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                ,limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
             ,cols: [[ //标题栏
-                {field: 'Contract_id', title: '合同编号', width: 120, sort: true}
-                , {field: 'Contract_name', title: '客户名称', width: 120}
-                , {field: 'Contract_address', title: '送货地址', width: 120}
-                , {field: 'Contract_amount', title: '混凝土需求量\m³', width: 160}
-                , {field: 'Contract_price', title: '混凝土单价', width: 160}
-                , {field: 'Contract_concretegrade', title: '混泥土等级', width: 120}
-                , {field: 'Contract_time', title: '签订时间', width: 120}
-                , {field: 'Contract_contact', title: '联系人', width: 120}
-                , {field: 'Contract_telephone', title: '联系电话', width: 120}
-                , {field: 'Contract_remark', title: '备注', width: 120}
-                , {field: 'Contract_registrant', title: '合同登记人', width: 120}
-                , {field: 'Contract_registranttime', title: '合同登记日期', width: 210}
+                {field: 'id', title: '合同编号', width: 120, sort: true}
+                , {field: 'name', title: '客户名称', width: 120}
+                , {field: 'address', title: '送货地址', width: 120}
+                , {field: 'amount', title: '混凝土需求量\m³', width: 160}
+                , {field: 'price', title: '混凝土单价', width: 160}
+                , {field: 'concretegrade', title: '混泥土等级', width: 120}
+                , {field: 'time', title: '签订时间', width: 120}
+                , {field: 'contact', title: '联系人', width: 120}
+                , {field: 'telephone', title: '联系电话', width: 120}
+                , {field: 'remark', title: '备注', width: 120}
+                , {field: 'registrant', title: '合同登记人', width: 120}
+                , {field: 'registranttime', title: '合同登记日期', width: 210}
                 , {fixed: 'right',title: '操作', width: 280, align: 'center', toolbar: '#conbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,id: 'testReload'
             ,page: true //开启分页,id
             ,even: true
+        /*    ,data: [{
+                "id":"1"
+                ,"name":"2"
+                ,"address":"3"
+                ,"amount":"4"
+                ,"price":"5"
+                ,"concretegrade":"6"
+                ,"time":"7"
+                ,"contact":"8"
+                ,"registrant":"8"
+            }]*/
         });
 
         //搜素
@@ -143,15 +148,15 @@
                     offset: ['20px', '50px'],
                     success:function(layero, index){
                         var othis = layero.find('iframe').contents().find("#contractmodify").click();
-                        othis.find('input[name="id"]').val(data.Contract_id);
-                        othis.find('input[name="name"]').val(data.Contract_name);
-                        othis.find('input[name="address"]').val(data.Contract_address);
-                        othis.find('input[name="contact"]').val(data.Contract_contact);
-                        othis.find('input[name="telephone"]').val(data.Contract_telephone);
-                        othis.find('input[name="amount"]').val(data.Contract_amount);
-                        othis.find('input[name="concretegrade"]').val(data.Contract_concretegrade);
-                        othis.find('input[name="price"]').val(data.Contract_price);
-                        othis.find('input[name="time"]').val(data.Contract_time);
+                        othis.find('input[name="id"]').val(data.id);
+                        othis.find('input[name="name"]').val(data.name);
+                        othis.find('input[name="address"]').val(data.address);
+                        othis.find('input[name="contact"]').val(data.contact);
+                        othis.find('input[name="telephone"]').val(data.telephone);
+                        othis.find('input[name="amount"]').val(data.amount);
+                        othis.find('input[name="concretegrade"]').val(data.concretegrade);
+                        othis.find('input[name="price"]').val(data.price);
+                        othis.find('input[name="time"]').val(data.time);
                 }
                 });
             } else if (obj.event === 'del') {

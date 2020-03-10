@@ -32,7 +32,7 @@ public class TransportationDTO {
     /**
      * 发车时间 time
      */
-    private Long time;
+    private String time;
 
     /**
      * 运输表登记人 registrant
@@ -68,11 +68,11 @@ public class TransportationDTO {
         this.contractId = contractId;
     }
 
-    public Long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -111,15 +111,43 @@ public class TransportationDTO {
      */
     public TransportationDTO transfer(Transportation transportation){
         try {
-            Long time = transportation.getRegistranttime();
-            BeanUtils.copyProperties(transportation, this , "registranttime");
+            Long time = transportation.getTime();
+            Long registranttime = transportation.getRegistranttime();
+            BeanUtils.copyProperties(transportation, this , "time" , "registranttime");
             //签订时间 登记时间设置
             String timeToString = DateUtil.convertTimeToString(time);
+            String registranttimeToString = DateUtil.convertTimeToString(registranttime);
             timeToString = DateUtil.cutBackZero(timeToString);
-            this.setRegistranttime(timeToString);
+            registranttimeToString = DateUtil.cutBackZero(registranttimeToString);
+            this.setTime(timeToString);
+            this.setRegistranttime(registranttimeToString);
         } catch (Exception e) {
             logger.error("转换错误", e);
         }
         return this;
+    }
+
+    /**
+     * 转换返回
+     * @param transportationDTO
+     * @return
+     */
+    public Transportation transferBack(TransportationDTO transportationDTO){
+        Transportation transportation = new Transportation();
+        try {
+            String time = transportationDTO.getTime();
+            String registranttime = transportationDTO.getRegistranttime();
+            BeanUtils.copyProperties(transportationDTO, transportation , "time" , "registranttime");
+            //签订时间 登记时间设置
+            time = DateUtil.addBackZero(time);
+            registranttime = DateUtil.addBackZero(registranttime);
+            Long timeToLong = DateUtil.convertTimeToLong(time);
+            Long registranttimeToLong = DateUtil.convertTimeToLong(registranttime);
+            transportation.setTime(timeToLong);
+            transportation.setRegistranttime(registranttimeToLong);
+        } catch (Exception e) {
+            logger.error("转换错误", e);
+        }
+        return transportation;
     }
 }

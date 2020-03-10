@@ -1,9 +1,11 @@
 package cn.edu.nyist.service.impl;
 
 import cn.edu.nyist.dao.ActualproMapper;
+import cn.edu.nyist.dao.ScheduleMapper;
 import cn.edu.nyist.model.*;
 import cn.edu.nyist.service.ActualproService;
 import cn.edu.nyist.service.ContractService;
+import cn.edu.nyist.service.ScheduleService;
 import cn.edu.nyist.util.DateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,6 +29,8 @@ public class ActualproServiceImpl implements ActualproService {
     private ActualproMapper actualproMapper;
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
     @Override
     public Integer dayOfproduction() {
         //当天
@@ -109,5 +113,37 @@ public class ActualproServiceImpl implements ActualproService {
             concreteBackListList.add(concreteBackList);
         }
         return concreteBackListList;
+    }
+
+    @Override
+    public List<ActualproDTO> findAllActualpro() {
+        List<Actualpro> actualpros = actualproMapper.selectByExample(new ActualproExample());
+        List<ActualproDTO> actualproDTOList = Lists.newArrayList();
+        actualpros.forEach(p->actualproDTOList.add(new ActualproDTO().transfer(p)));
+        return actualproDTOList;
+    }
+
+    @Override
+    public void addActualproDTO(ActualproDTO actualproDTO) {
+        Actualpro actualpro = new ActualproDTO().transferBack(actualproDTO);
+        Integer scheduleId = actualpro.getScheduleId();
+        Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleId);
+        if (schedule.getState().equals("0")){
+            actualproMapper.insert(actualpro);
+        }else{
+            throw new RuntimeException("添加失败");
+        }
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+        actualproMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void update(ActualproDTO actualproDTO) {
+        Actualpro actualpro = new ActualproDTO().transferBack(actualproDTO);
+        actualproMapper.updateByPrimaryKey(actualpro);
     }
 }

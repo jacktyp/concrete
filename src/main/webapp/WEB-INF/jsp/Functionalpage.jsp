@@ -30,7 +30,7 @@
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>贤心</cite>
+                        <cite>默默</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a lay-href="set/user/info.html">基本资料</a></dd>
@@ -127,13 +127,13 @@
                     <li data-name="Man" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="管理" lay-direction="2">
                             <i class="layui-icon layui-icon-senior"></i>
-                            <cite>管理</cite>
+                            <cite>原材料&车辆管理</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd data-name="Mixproportion">
-                                <a lay-href="/concrete/page/Procurement">原材料存储管理</a>
+                            <dd data-name="Procurement">
+                                <a lay-href="/concrete/page/Procurement">原材料统计</a>
                             </dd>
-                            <dd data-name="Mixproportionlist">
+                            <dd data-name="Vehicle">
                                 <a lay-href="/concrete/page/Vehicle">车辆统计</a>
                             </dd>
                         </dl>

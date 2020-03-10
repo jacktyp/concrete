@@ -24,7 +24,7 @@
 <body>
 <div class="layui-fluid">
     <h2 style="color:#000000;padding: 20px">合同录入</h2>
-    <form class="layui-form" action="/concrete/user1/addUser" method="post">
+    <form class="layui-form" action="/concrete/contract/selectContract" method="post">
 
         <div class="layui-form-item">
             <div class="layui-item">
@@ -80,18 +80,6 @@
                     <input type="text" name="concretegrade" lay-verify="title" autocomplete="off"
                            placeholder="如：A15、A20、C10、C15..."
                            class="layui-input">
-                    <%--<select name="modules" lay-verify="required" lay-search="">
-                        <option value="">直接选择或搜索选择</option>
-                        <option value="1">A10</option>
-                        <option value="2">A12</option>
-                        <option value="3">A20</option>
-                        <option value="5">C15</option>
-                        <option value="6">C20</option>
-                        <option value="7">C25</option>
-                        <option value="8">C30</option>
-                    </select>
-                </div>--%>
-
                 </div>
 
                 <div class="layui-inline">
@@ -140,7 +128,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">录入</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>

@@ -50,6 +50,25 @@ public class ContractController {
         }
     }
 
+    /**
+     * 查询为0的合同
+     * @return
+     */
+    @RequestMapping(value = "/findAllContractByState",method = RequestMethod.GET)
+    @ResponseBody
+    public LayuiUtil findAllContractByState(Integer limit,Integer page){
+        try{
+            List<ContractDTO> contractList = contractService.findAllContractByState();
+            //分页
+            QueryResult<ContractDTO> result = QueryUtil.getListByPageInfo(contractList, limit, page);
+            System.out.print(LayuiUtil.backLayuiData(result.getItems(),result.getRowCount()));
+            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+        }catch (Exception e){
+            logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+            return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
+        }
+    }
+
 
     /**
      * 查询所有合同
@@ -77,6 +96,7 @@ public class ContractController {
     @ResponseBody
     public LayuiUtil addContract(ContractDTO contract){
         try{
+            contract.setRemark("0");
             contractService.addContract(contract);
             return LayuiUtil.newSuccess(MessageConstant.getMessage(MessageConstant.SAVESUCCESS));
         }catch (Exception e){

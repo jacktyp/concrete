@@ -1,6 +1,7 @@
 package cn.edu.nyist.service;
 
 import cn.edu.nyist.model.Schedule;
+import cn.edu.nyist.model.ScheduleDTO;
 
 import java.util.List;
 
@@ -31,4 +32,22 @@ public interface ScheduleService {
      * @return
      */
     List<Schedule> getScheduleInDate(Long startTime,Long endTime);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<ScheduleDTO> findAllSchedule();
+
+    /**
+     * 增加
+     * @param scheduleDTO
+     */
+    void addScheduleDTO(ScheduleDTO scheduleDTO);
+
+    List<ScheduleDTO> findAllScheduleByState();
+
+    void delete(Integer id);
+
+    void update(ScheduleDTO scheduleDTO);
 }
