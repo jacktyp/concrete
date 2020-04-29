@@ -32,4 +32,6 @@ public interface ProcureService {
     void delete(Integer id);
 
     void update(ProcureMentDTO procureMentDTO);
+
+    List<ProcureMentDTO> findAllContract() throws Exception;
 }

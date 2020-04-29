@@ -77,7 +77,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Schedule> schedules = scheduleMapper.selectByExample(new ScheduleExample());
         List<ScheduleDTO> ScheduleDTOList = Lists.newArrayList();
         schedules.forEach(p->ScheduleDTOList.add(new ScheduleDTO().transfer(p)));
-        return ScheduleDTOList.stream().filter(p->p.getState() == "0").collect(Collectors.toList());
+        return ScheduleDTOList.stream().filter(p->"0".equals(p.getState())).collect(Collectors.toList());
     }
 
     @Override

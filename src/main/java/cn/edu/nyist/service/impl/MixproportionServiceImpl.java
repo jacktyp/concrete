@@ -24,10 +24,15 @@ public class MixproportionServiceImpl implements MixproportionService {
     private MixproportionMapper mixproportionMapper;
 
     @Override
-    public MixproportionDTO getMixproportion(Integer id) throws Exception {
-        Mixproportion mixproportion = mixproportionMapper.selectByPrimaryKey(id);
-        MixproportionDTO mixproportionDTO = new MixproportionDTO().transfer(mixproportion);
-        return mixproportionDTO;
+    public List<MixproportionDTO> getMixproportion() throws Exception {
+        MixproportionExample mixproportionExample = new MixproportionExample();
+        MixproportionExample.Criteria criteria = mixproportionExample.createCriteria();
+        criteria.andStateEqualTo("1");
+        List<Mixproportion> mixproportions = mixproportionMapper.selectByExample(mixproportionExample);
+        List<MixproportionDTO> mixproportionList = Lists.newArrayList();
+        mixproportions.forEach(p->mixproportionList.add(new MixproportionDTO().transfer(p)));
+
+        return mixproportionList;
     }
 
     @Override
@@ -43,6 +48,7 @@ public class MixproportionServiceImpl implements MixproportionService {
     @Override
     public void addMixproportion(MixproportionDTO mixproportionDTO) throws Exception {
         Mixproportion mixproportion = new MixproportionDTO().transferBack(mixproportionDTO);
+        mixproportion.setState("0");
         mixproportionMapper.insert(mixproportion);
     }
 

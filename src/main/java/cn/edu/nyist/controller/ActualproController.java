@@ -7,6 +7,8 @@ import cn.edu.nyist.util.LayuiUtil;
 import cn.edu.nyist.util.MessageConstant;
 import cn.edu.nyist.util.QueryResult;
 import cn.edu.nyist.util.QueryUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,21 @@ public class ActualproController {
     public LayuiUtil selectConcrete(Integer limit, Integer page){
         try{
             List<ConcreteBackList> concreteBackListList =  actualproService.findConcreteCost();
-            QueryResult<ConcreteBackList> result = QueryUtil.getListByPageInfo(concreteBackListList, limit, page);
-            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+            List<String> listData = Lists.newArrayList();
+            List<String> listPrice = Lists.newArrayList();
+
+            for (ConcreteBackList concreteBackList : concreteBackListList) {
+                String date = concreteBackList.getDate();
+                String price = concreteBackList.getPrice();
+                listData.add(date);
+                listPrice.add(price);
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("listData",listData);
+            jsonObject.put("listPrice",listPrice);
+            //QueryResult<ConcreteBackList> result = QueryUtil.getListByPageInfo(concreteBackListList, limit, page);
+            //return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+            return LayuiUtil.newSuccess(JSONObject.toJSONString(jsonObject));
         }catch (Exception e){
             logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
             return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));

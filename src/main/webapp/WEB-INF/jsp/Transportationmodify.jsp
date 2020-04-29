@@ -98,7 +98,8 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
@@ -111,44 +112,28 @@
         //日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
             //,lang: 'en'
         });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
-                }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
-
         //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(demo1)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/transportation/updateTransportDTO",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+            });
             return false;
         });
 

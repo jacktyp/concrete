@@ -42,4 +42,7 @@ public interface UserService {
      * @throws Exception
      */
     void deleteUser(Integer id) throws Exception;
+
+    User findUser(String userName, String password);
+
 }

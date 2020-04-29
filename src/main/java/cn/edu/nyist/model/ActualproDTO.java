@@ -255,11 +255,8 @@ public class ActualproDTO {
             Long productiontime = actualpro.getProductiontime();
             Long endtiime = actualpro.getEndtiime();
             Long registranttime = actualpro.getRegistranttime();
-            BeanUtils.copyProperties(actualpro, this ,  "time","productiontime","endtiime","registranttime");
-            //签订时间 登记时间设置
-            String timeToString = DateUtil.convertTimeToString(time);
-            timeToString = DateUtil.cutBackZero(timeToString);
-            this.setTime(timeToString);
+            BeanUtils.copyProperties(actualpro, this ,  "productiontime","endtiime","registranttime");
+
 
             String timeToString1 = DateUtil.convertTimeToString(productiontime);
             timeToString1 = DateUtil.cutBackZero(timeToString1);
@@ -272,6 +269,8 @@ public class ActualproDTO {
             String timeToString3 = DateUtil.convertTimeToString(registranttime);
             timeToString3 = DateUtil.cutBackZero(timeToString3);
             this.setRegistranttime(timeToString3);
+
+            this.setTime(String.valueOf(time));
         } catch (Exception e) {
             //logger.error("转换错误", e);
         }
@@ -290,23 +289,21 @@ public class ActualproDTO {
             String productiontime = actualproDTO.getProductiontime();
             String endtiime = actualproDTO.getEndtiime();
             String registranttime = actualproDTO.getRegistranttime();
-            BeanUtils.copyProperties(actualproDTO, actualpro ,  "time","productiontime","endtiime","registranttime");
-            //签订时间 登记时间设置
-            time = DateUtil.addBackZero(this.time);
-            Long timeToLong = DateUtil.convertTimeToLong(time);
-            actualpro.setTime(timeToLong);
+            BeanUtils.copyProperties(actualproDTO, actualpro ,  "productiontime","endtiime","registranttime");
 
-            productiontime = DateUtil.addBackZero(this.productiontime);
+
+            productiontime = DateUtil.addBackZero(productiontime);
             Long productTime = DateUtil.convertTimeToLong(productiontime);
             actualpro.setProductiontime(productTime);
 
-            endtiime = DateUtil.addBackZero(this.endtiime);
+            endtiime = DateUtil.addBackZero(endtiime);
             Long endtiimeToLong = DateUtil.convertTimeToLong(endtiime);
             actualpro.setEndtiime(endtiimeToLong);
 
-            registranttime = DateUtil.addBackZero(this.registranttime);
+            registranttime = DateUtil.addBackZero(registranttime);
             Long registranttimeToLong = DateUtil.convertTimeToLong(registranttime);
             actualpro.setRegistranttime(registranttimeToLong);
+            actualpro.setTime(Long.parseLong(time));
         } catch (Exception e) {
             //logger.error("转换错误", e);
         }

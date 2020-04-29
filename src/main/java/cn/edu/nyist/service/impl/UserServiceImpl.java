@@ -6,6 +6,7 @@ import cn.edu.nyist.model.UserExample;
 import cn.edu.nyist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void addUser(User user) throws Exception{
+        user.setUserState("1");
         userMapper.insert(user);
     }
 
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService{
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andIdEqualTo(user.getId());
+        user.setUserState("0");
         userMapper.updateByExample(user,userExample);
     }
 
@@ -50,4 +53,19 @@ public class UserServiceImpl implements UserService{
     public void deleteUser(Integer id) throws Exception {
         userMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public User findUser(String userName, String password) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUserNameEqualTo(userName);
+        criteria.andUserPasswordEqualTo(password);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (!CollectionUtils.isEmpty(users)){
+            return users.get(0);
+        }else{
+            return null;
+        }
+    }
+
 }

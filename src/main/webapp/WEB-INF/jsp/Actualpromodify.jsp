@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="layui-fluid" id="actualpromodify">
-    <form class="layui-form" action="">
+    <form class="layui-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">实际生产编号</label>
@@ -54,7 +54,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -113,7 +112,7 @@
                 <label class="layui-form-label">实际生产开始时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="productiontime" lay-verify="title" autocomplete="off" id="test5"
-                           placeholder="yyyy-MM-dd HH:mm:ss"
+                           placeholder="yyyy-MM-dd"
                            class="layui-input">
                 </div>
 
@@ -121,7 +120,7 @@
                     <label class="layui-form-label">实际生产结束时间</label>
                     <div class="layui-input-inline">
                         <input type="text" name="endtiime" lay-verify="title" autocomplete="off" id="test6"
-                               placeholder="yyyy-MM-dd HH:mm:ss"
+                               placeholder="yyyy-MM-dd"
                                class="layui-input">
                     </div>
                 </div>
@@ -140,22 +139,22 @@
                 <label class="layui-form-label">实际生产添加日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="registranttime" class="layui-input test-item" id="test7"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
+                           placeholder="yyyy-MM-dd">
                 </div>
             </div>
         </div>
 
-        <div class="layui-form-item">
+  <%--      <div class="layui-form-item">
             <label class="layui-form-label">实际生产车辆信息添加</label>
-            <%--<div class="layui-input-block">
+            &lt;%&ndash;<div class="layui-input-block">
                 <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder=""
                        class="layui-input">
-            </div>--%>
+            </div>&ndash;%&gt;
             <button type="button" onclick="addtest();" class="layui-btn layui-btn-normal layui-btn-lg layui-btn-radius">
                 运输单添加
             </button>
 
-        </div>
+        </div>--%>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -166,7 +165,7 @@
     </form>
 </div>
 </body>
-<script type="text/javascript">
+<%--<script type="text/javascript">
     function addtest() {
         layer.open({
             title: '添加运输单',
@@ -180,13 +179,14 @@
         })
 
     }
-</script>
+</script>--%>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
@@ -195,48 +195,39 @@
             , trigger: 'click'
             //,lang: 'en'
         });
-
-        //日期时间选择器
+//日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
             //,lang: 'en'
         });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
-                }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        //日期时间选择器
+        laydate.render({
+            elem: '#test7'
+            , eventElem: '#test7-1'
+            , trigger: 'click'
+            //,lang: 'en'
         });
 
         //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(demo1)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/actualpro/updateActualproDTO",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+            });
             return false;
         });
 

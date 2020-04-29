@@ -32,18 +32,18 @@ public class MixproportionController {
 
     /**
      * 查询配合比
-     * @param id
      * @return
      */
     @RequestMapping(value = "/selectMixproportion",method = RequestMethod.GET)
     @ResponseBody
-    public LayuiUtil selectMixproportion(Integer id){
+    public LayuiUtil selectMixproportion(Integer limit,Integer page){
         try{
-            if (id == null){
-                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
-            }
-            MixproportionDTO mixproportionDTO = mixproportionService.getMixproportion(id);
-            return LayuiUtil.newSuccess(mixproportionDTO.toString());
+//            if (id == null){
+//                return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.PARAMSMISS1,"id"));
+//            }
+            List<MixproportionDTO> mixproportionDTO = mixproportionService.getMixproportion();
+            QueryResult<MixproportionDTO> result = QueryUtil.getListByPageInfo(mixproportionDTO, limit, page);
+            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
         }catch (Exception e){
             logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
             return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));

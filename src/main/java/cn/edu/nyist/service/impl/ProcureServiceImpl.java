@@ -80,4 +80,14 @@ public class ProcureServiceImpl implements ProcureService {
         procurementMapper.updateByPrimaryKey(procurement);
     }
 
+    @Override
+    public List<ProcureMentDTO> findAllContract() throws Exception {
+        ProcurementExample procurementExample = new ProcurementExample();
+        List<Procurement> procurementList = procurementMapper.selectByExample(procurementExample);
+        //转换DTO
+        List<ProcureMentDTO> procureMentDTOList = Lists.newArrayList();
+        procurementList.forEach(p->procureMentDTOList.add(new ProcureMentDTO().transfer(p)));
+        return procureMentDTOList;
+    }
+
 }

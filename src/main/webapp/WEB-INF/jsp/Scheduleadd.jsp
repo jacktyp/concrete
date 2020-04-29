@@ -22,10 +22,16 @@
     <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
-<div class="layui-fluid">
-    <form class="layui-form" action="">
+<div class="layui-fluid" id="scheduleadd1">
+    <form class="layui-form">
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <input type="hidden" name="notificationId" lay-verify="title" autocomplete="off" placeholder="通知表编号"
+                   class="layui-input">
+            <input type="hidden" name="contractId" lay-verify="title" autocomplete="off" placeholder="合同表编号"
+                   class="layui-input">
+            <input type="hidden" name="time" lay-verify="title" autocomplete="off" placeholder="请填写分钟数" value="20"
+                   class="layui-input">
+            <%--<div class="layui-inline">
                 <label class="layui-form-label">通知表编号</label>
                 <div class="layui-input-inline">
                     <input type="text" name="notificationId" lay-verify="title" autocomplete="off" placeholder="通知表编号"
@@ -38,7 +44,9 @@
                     <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder="合同表编号"
                            class="layui-input">
                 </div>
-            </div>
+            </div>--%>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">生产计划名</label>
                 <div class="layui-input-inline">
@@ -47,7 +55,6 @@
                 </div>
             </div>
         </div>
-
         <%-- <div class="layui-form-item">
              <div class="layui-inline">
                  <label class="layui-form-label">计划生产所需车辆编号</label>
@@ -59,26 +66,25 @@
          </div>--%>
 
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <%--<div class="layui-inline">
                 <label class="layui-form-label">计划生产所需总时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="time" lay-verify="title" autocomplete="off" placeholder="请填写分钟数"
                            class="layui-input">
                 </div>
-            </div>
+            </div>--%>
             <div class="layui-inline">
                 <label class="layui-form-label">计划生产开始时间</label>
                 <div class="layui-input-inline">
                     <input type="text" name="productiontime" lay-verify="title" autocomplete="off" id="test5"
-                           placeholder="yyyy-MM-dd HH:mm:ss"
+                           placeholder="yyyy-MM-dd"
                            class="layui-input">
                 </div>
-
                 <div class="layui-inline">
                     <label class="layui-form-label">计划生产结束时间</label>
                     <div class="layui-input-inline">
                         <input type="text" name="endtiime" lay-verify="title" autocomplete="off" id="test6"
-                               placeholder="yyyy-MM-dd HH:mm:ss"
+                               placeholder="yyyy-MM-dd"
                                class="layui-input">
                     </div>
                 </div>
@@ -96,7 +102,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">生产计划添加日期</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="registranttime" class="layui-input test-item" id="test7" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="registranttime" class="layui-input test-item" id="test7" placeholder="yyyy-MM-dd">
                 </div>
             </div>
         </div>
@@ -115,69 +121,47 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
             elem: '#test5'
             , eventElem: '#test5-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
-
         //日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
-
         //日期时间选择器
         laydate.render({
             elem: '#test7'
-            , type: 'datetime'
             , eventElem: '#test7-1'
             , trigger: 'click'
-            //,lang: 'en'
-        });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
-                }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
         });
 
         //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(demo1)', function(data){
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/schedule/addScheduleDTO",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
             return false;
         });
-
     });
 </script>
 </html>

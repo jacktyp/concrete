@@ -19,6 +19,7 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 
 <body>
@@ -29,18 +30,9 @@
     </div>
 </div>
 </body>
-<script type="text/html" id="mixlistbar1">
-    <div class="search1">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
-    </div>
-</script>
 <script type="text/html" id="mixlistbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 <script>
     layui.use(['table'], function () {
@@ -49,78 +41,61 @@
         //展示已知数据
         table.render({
             elem: '#mixlist1'
-            , url: '/test/testdata1.json'
-            , toolbar: '#mixlistbar1' //开启头部工具栏，并为其绑定左侧模板
-            , defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                , layEvent: 'LAYTABLE_TIPS'
-                , icon: 'layui-icon-tips'
-            }]
-            , method: 'post'
-            , request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                , limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
+            ,url: 'http://localhost:8080/concrete/mixproportion/selectMixproportion'
+            ,toolbar: '#mixbar1' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'print', 'exports']
             , cols: [[ //标题栏
-                {field: 'Mixproportion_id', title: '配合比编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'Mixproportion_name', title: '配合比名称', width: 120, rowspan: 2}
-                , {field: 'Mixproportion_concretegrade', title: '混凝土等级', width: 120, rowspan: 2}
-                , {field: 'Mixproportion_mp', title: '混泥土配合比', width: 120, rowspan: 2}
-                , {field: 'Mixproportion_state', title: '是否合格', templet: '#switchTpl', width: 100}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
-                , {field: 'Mixproportion_stone', title: '每方混凝土的石头量\kg', width: 100}
-                , {field: 'Mixproportion_sand', title: '每方混凝土的沙子量\kg', width: 100}
-                , {field: 'Mixproportion_cement', title: '每方混凝土的水泥量\kg', width: 100}
-                , {field: 'Mixproportion_water', title: '每方混凝土的水量\kg', width: 100}
-                , {field: 'Mixproportion_additive', title: '每方混凝土的添加剂量\kg', width: 100}
-
-                , {field: 'Notification_registrant', title: '实验人', width: 120, unresize: true, rowspan: 2}
-                , {field: 'Notification_registranttime', title: '实验日期', width: 210, rowspan: 2}
+                {field: 'id', title: 'ID', width: 120 ,rowspan: 2, sort: true}
+                , {field: 'name', title: '配合比名称', width: 120 ,rowspan: 2}
+                , {field: 'concretegrade', title: '混凝土等级', width: 120 ,rowspan: 2}
+                , {field: 'mp', title: '混泥土配合比', width: 120 ,rowspan: 2}
+                //, {field: 'state', title: '是否合格',templet: '#switchTpl', width: 100}
+                , {field: 'stone', title: '每方混凝土的石头量\kg', width: 100}
+                , {field: 'sand', title: '每方混凝土的沙子量\kg', width: 100}
+                , {field: 'cement', title: '每方混凝土的水泥量\kg', width: 100}
+                , {field: 'water', title: '每方混凝土的水量\kg', width: 100}
+                , {field: 'additive', title: '每方混凝土的添加剂量\kg', width: 100}
+                , {field: 'remark', title: '备注', width: 100}
+                //, {field: 'experiment', title: '实验人', width: 120,unresize: true,rowspan: 2}
+                //, {field: 'experimenttime', title: '实验日期', width: 210 ,rowspan: 2}
                 , {fixed: 'right', title: '操作', width: 240, rowspan: 2, align: 'center', toolbar: '#mixlistbar2'} //这里的toolbar值是模板元素的选择器
             ]]
-            ,id: 'testReload'
             , page: true //开启分页,
             , limit: 10
         });
-        //搜素
-        var $ = layui.$, active  = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                }, 'data');
-            }
-        };
-        $('.search1 .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
-        //监听合格操作
-        form.on('switch(sexDemo)', function (obj) {
-            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-        });
-
         //监听工具条
         table.on('tool(mixlistfilter1)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
-            } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.msg('配合比编号：' + data.id + '<br>'
+                    +'配合比名称：' + data.name + '<br>'
+                    +'混凝土等级：' + data.concretegrade + '<br>'
+                    +'混泥土配合比：' + data.mp + '<br>'
+                    +'每方混凝土的石头量：' + data.stone + '<br>'
+                    +'每方混凝土的沙子量：' + data.sand + '<br>'
+                    +'每方混凝土的水泥量：' + data.cement + '<br>'
+                    +'每方混凝土的水量：' + data.water + '<br>'
+                    +'每方混凝土的添加剂量：' + data.additive + '<br>'
+                    +'备注：' + data.remark + '<br>');
+            }  else if (obj.event === 'del') {
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/mixproportion/deleteMixproportion",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         })

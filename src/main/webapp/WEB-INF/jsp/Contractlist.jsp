@@ -19,6 +19,7 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 <body>
 <div class="layui-fluid">
@@ -30,37 +31,50 @@
 </body>
 <script type="text/html" id="conbar1">
     <div class="search1">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
+        <button type="button" onclick="addtest();" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-add-1">录入合同</i></button>
     </div>
 </script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script type="text/html" id="conbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="add">添加通知单</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="add"><i class="layui-icon layui-icon-add-circle"></i>添加通知</a>
+    <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+<script type="text/html" id="buttonTpl">
+    {{#  if(d.remark == 1){ }}
+    <button class="layui-btn layui-btn-xs">完成</button>
+    {{#  } else { }}
+    <button class="layui-btn layui-btn-primary layui-btn-xs">未完成</button>
+    {{#  } }}
+</script>
+<script type="text/javascript">
+    function addtest() {
+        layer.open({
+            title:'添加合同',
+            type: 2,
+            content: 'http://localhost:8080/concrete/page/Contractadd',
+            area: ['1000px', '600px'],
+            moveOut: true,
+            shade: [0.8, '#393D49'],
+            scrollbar: false,
+            offset:['10px', '20px']
+        })
+    }
 </script>
 <script>
     layui.use(['table'], function () {
         var table = layui.table;
-
         //展示已知数据
         table.render({
             elem: '#contractlist'
             ,url: 'http://localhost:8080/concrete/contract/findAllContractByState'
             ,toolbar: '#conbar1' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-tips'
-            }]
+            ,defaultToolbar: ['filter', 'print', 'exports']
             ,cols: [[ //标题栏
-                {field: 'id', title: '合同编号', width: 120, sort: true}
+                {field: 'id', title: 'ID', width: 120, sort: true}
                 , {field: 'name', title: '客户名称', width: 120}
+                , {field: 'remark', title: '状态',templet: '#buttonTpl',width: 120}
                 , {field: 'address', title: '送货地址', width: 120}
                 , {field: 'amount', title: '混凝土需求量\m³', width: 160}
                 , {field: 'price', title: '混凝土单价', width: 160}
@@ -68,72 +82,47 @@
                 , {field: 'time', title: '签订时间', width: 120}
                 , {field: 'contact', title: '联系人', width: 120}
                 , {field: 'telephone', title: '联系电话', width: 120}
-                , {field: 'remark', title: '备注', width: 120}
                 , {field: 'registrant', title: '合同登记人', width: 120}
                 , {field: 'registranttime', title: '合同登记日期', width: 210}
-                , {fixed: 'right',title: '操作', width: 280, align: 'center', toolbar: '#conbar2'} //这里的toolbar值是模板元素的选择器
+                , {fixed: 'right',title: '操作', width: 320, align: 'center', toolbar: '#conbar2'} //这里的toolbar值是模板元素的选择器
             ]]
-            ,id: 'testReload'
-            ,page: true //开启分页,id
+            ,page: true //开启分页
             ,even: true
-        /*    ,data: [{
-                "id":"1"
-                ,"name":"2"
-                ,"address":"3"
-                ,"amount":"4"
-                ,"price":"5"
-                ,"concretegrade":"6"
-                ,"time":"7"
-                ,"contact":"8"
-                ,"registrant":"8"
-            }]*/
-        });
-
-        //搜素
-        var $ = layui.$, active  = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                }, 'data');
-            }
-        };
-        $('.search1 .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
         });
 
         //监听工具条
         table.on('tool(conteractlist)', function (obj) {
-            var data = obj.data;
+            var data = obj.data;//id name address amount price concretegrade time contact telephone remark registrant registranttime
             if (obj.event === 'detail') {
-                layer.msg('合同编号：' + data.Contract_id + '<br>'
-                    +'客户名称：' + data.Contract_name + '<br>'
-                    +'混凝土需求量：' + data.Contract_amount + '<br>'
-                    +'混泥土等级：' + data.Contract_concretegrade + '<br>'
-                    +'合同登记人：' + data.Contract_registrant + '<br>'
-                    +'合同登记日期：' + data.Contract_registranttime);
+                layer.msg('合同编号：' + data.id + '<br>'
+                    +'客户名称：' + data.name + '<br>'
+                    +'地址：' + data.address + '<br>'
+                    +'混凝土需求量：' + data.amount + '<br>'
+                    +'混凝土价格：' + data.price + '<br>'
+                    +'混泥土等级：' + data.concretegrade + '<br>'
+                    +'合同签订时间：' + data.time + '<br>'
+                    +'联系人：' + data.contact + '<br>'
+                    +'联系电话：' + data.telephone + '<br>'
+                    +'合同登记人：' + data.registrant + '<br>'
+                    +'合同登记日期：' + data.registranttime);
             } else if (obj.event === 'add') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
                 /*1、我给你传递、混凝土强度
                 * 2、混凝土强度是否存在判断；存在了石头、沙子、水泥、添加剂、水*混凝土总量返回给我，*/
                 layer.open({
                     title: '通知单制作',
                     type: 2,
                     content: 'http://localhost:8080/concrete/page/Noticeadd',
-                    area: ['1200px', '720px'],
+                    area: ['1100px', '600px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: ['20px', '50px']
+                    offset: ['10px', '20px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#noticeadd").click();
+                        othis.find('input[name="contractId"]').val(data.id);
+                        othis.find('input[name="concreteamount"]').val(data.amount);
+                        othis.find('input[name="mixproportionId"]').val(data.concretegrade);
+                    }
                 });
             } else if (obj.event === 'edit') {
                 var tr = $(obj.tr);
@@ -141,11 +130,11 @@
                     title: '合同修改',
                     type: 2,
                     content: 'http://localhost:8080/concrete/page/Contractmodify',
-                    area: ['1200px', '620px'],
+                    area: ['1000px', '600px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: ['20px', '50px'],
+                    offset: ['10px', '20px'],
                     success:function(layero, index){
                         var othis = layero.find('iframe').contents().find("#contractmodify").click();
                         othis.find('input[name="id"]').val(data.id);
@@ -157,12 +146,30 @@
                         othis.find('input[name="concretegrade"]').val(data.concretegrade);
                         othis.find('input[name="price"]').val(data.price);
                         othis.find('input[name="time"]').val(data.time);
+                        othis.find('input[name="remark"]').val(data.remark);
+                        othis.find('input[name="registrant"]').val(data.registrant);
+                        othis.find('input[name="registranttime"]').val(data.registranttime);
                 }
                 });
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/contract/deleteContract",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         });

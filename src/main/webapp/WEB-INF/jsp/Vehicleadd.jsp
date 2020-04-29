@@ -23,8 +23,8 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <form class="layui-form" action="">
-        <div class="layui-inline">
+    <form class="layui-form">
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">驾驶员</label>
                 <div class="layui-input-inline">
@@ -40,12 +40,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">车的最大载量</label>
-            <div class="layui-input-inline">
-                <input type="text" name="maximumload" lay-verify="title" autocomplete="off" placeholder="数值"
-                       class="layui-input">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">车的最大载量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="maximumload" lay-verify="title" autocomplete="off" placeholder="数值"
+                           class="layui-input">
+                </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">运输价格</label>
@@ -53,17 +54,43 @@
                     <input type="text" name="price" class="layui-input test-item" placeholder="运输价格">
                 </div>
             </div>
-            <div class="layui-inline">
+            <%--<div class="layui-inline">
                 <label class="layui-form-label">车辆类型</label>
                 <div class="layui-input-inline">
                     <input type="text" name="type" class="layui-input test-item" placeholder="车辆类型">
                 </div>
+            </div>--%>
+            <div class="layui-form" lay-filter="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车辆类型</label>
+                    <div class="layui-input-inline">
+                        <select name="type" lay-verify="required" lay-search="">
+                            <option value="1">泵车</option>
+                            <option value="2">搅拌车10方</option>
+                            <option value="3">搅拌车15方</option>
+                            <option value="4">搅拌车20方</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="layui-inline">
+        </div>
+        <div class="layui-form-item">
+           <%-- <div class="layui-inline">
                 <label class="layui-form-label">车辆状态</label>
                 <div class="layui-input-block">
                     <input type="text" name="state" lay-verify="title" autocomplete="off" placeholder="车辆状态"
                            class="layui-input">
+                </div>
+            </div>--%>
+            <div class="layui-form" lay-filter="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车辆状态</label>
+                    <div class="layui-input-inline">
+                        <select name="state" lay-verify="required" lay-search="">
+                            <option value="1">空闲</option>
+                            <option value="0">出车</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,64 +102,46 @@
         </div>
     </form>
 </div>
-</div>
 </body>
 <script>
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
-
+            , laydate = layui.laydate
+            , $ = layui.$;
+        form.render();
         //日期时间选择器
         laydate.render({
             elem: '#test5'
             , eventElem: '#test5-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
 
         //日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
-            //,lang: 'en'
-        });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
-                }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
         });
 
         //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(demo1)', function(data){
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/vehicle/addVehicle",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
             return false;
         });
 

@@ -7,6 +7,8 @@ import cn.edu.nyist.util.LayuiUtil;
 import cn.edu.nyist.util.MessageConstant;
 import cn.edu.nyist.util.QueryResult;
 import cn.edu.nyist.util.QueryUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -34,7 +38,7 @@ public class TransportationController {
     private TransportationService transportationService;
 
     /**
-     * 车辆费用
+     * 车辆费用支出
      * @param limit
      * @param page
      * @return
@@ -44,8 +48,27 @@ public class TransportationController {
     public LayuiUtil selectTransport(Integer limit,Integer page){
         try{
             List<TransportationBackList> transportationDTOList =  transportationService.findVehicleCost();
-            QueryResult<TransportationBackList> result = QueryUtil.getListByPageInfo(transportationDTOList, limit, page);
-            return LayuiUtil.backLayuiData(result.getItems(),result.getRowCount());
+
+            List<String> listData = Lists.newArrayList();
+            List<String> listPrice = Lists.newArrayList();
+
+            for (TransportationBackList transportationBackList : transportationDTOList) {
+                String date = transportationBackList.getDate();
+                String price = transportationBackList.getPrice();
+                listData.add(date);
+                listPrice.add(price);
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("listData",listData);
+            jsonObject.put("listPrice",listPrice);
+//            Map<String, List<TransportationBackList>> stringListMap = transportationDTOList.stream().collect(Collectors.groupingBy(TransportationBackList::getDate));
+//
+//            for (Map.Entry<String, List<TransportationBackList>> entry : stringListMap.entrySet()){
+//                String key = entry.getKey();
+//            }
+
+//            QueryResult<TransportationBackList> result = QueryUtil.getListByPageInfo(transportationDTOList, limit, page);
+            return LayuiUtil.newSuccess(JSONObject.toJSONString(jsonObject));
         }catch (Exception e){
             logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
             return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));

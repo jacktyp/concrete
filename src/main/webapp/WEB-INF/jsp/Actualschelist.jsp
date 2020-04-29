@@ -19,6 +19,7 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 
 <body>
@@ -29,20 +30,17 @@
     </div>
 </div>
 </body>
-
-<script type="text/html" id="actschelistbar1">
-    <div class="search1">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
-    </div>
-</script>
 <script type="text/html" id="actschelistbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="add">模拟生产</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="add"><i class="layui-icon layui-icon-add-circle"></i>实际生产</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+<script type="text/html" id="buttonTpl">
+    {{#  if(d.state == 1){ }}
+    <button class="layui-btn layui-btn-xs">完成</button>
+    {{#  } else { }}
+    <button class="layui-btn layui-btn-primary layui-btn-xs">未完成</button>
+    {{#  } }}
 </script>
 <script>
     layui.use(['table'], function () {
@@ -51,85 +49,78 @@
         //展示已知数据
         table.render({
             elem: '#actschlist1'
-            ,url: '/test/testdata1.json'
-            //,count: total//数据总数，从服务端得到
-            ,toolbar: '#actschelistbar1' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-tips'
-            }]
-            ,method: 'post'
-            ,request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                ,limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
+            ,url: 'http://localhost:8080/concrete/schedule/findAllScheduleByState'
+            //,toolbar: '#conbar1' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'print', 'exports']
             ,cols: [[ //标题栏
-                {field: 'id', title: '生产计划编号', width: 120 ,rowspan: 2, sort: true}
+                {field: 'id', title: '生产计划编号', width: 150 ,rowspan: 2, sort: true}
                 , {field: 'name', title: '生产计划名', width: 120 ,rowspan: 2}
-                , {field: 'notificationId', title: '通知单编号', width: 120 ,rowspan: 2}
-                , {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2}
-                , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
-                , {field: 'state', title: '计划状态', width: 120 ,rowspan: 2}
-                , {field: 'time', title: '计划生产需时间', width: 120 ,rowspan: 2}
-                , {field: 'Schedule_productiontime', title: '生产开始时间', width: 100}
-                , {field: 'Schedule_endtiime', title: '生产结束时间', width: 100}
-                , {field: 'Schedule_registrant', title: '计划登记人', width: 100}
-                , {field: 'Schedule_registranttime', title: '计划登记时间', width: 100}
+                //, {field: 'notificationId', title: '通知单编号', width: 120 ,rowspan: 2, sort: true}
+                //, {field: 'contractId', title: '合同编号', width: 120 ,rowspan: 2, sort: true}
+                // , {field: 'vehicleId', title: '车辆编号', width: 120 ,rowspan: 2}
+                , {field: 'state', title: '计划状态', templet: '#buttonTpl',width: 120 ,rowspan: 2, sort: true}
+                //, {field: 'time', title: '计划生产需时间', width: 120 ,rowspan: 2}
+                , {field: 'productiontime', title: '生产开始时间', width: 150}
+                , {field: 'endtiime', title: '生产结束时间', width: 150}
+                , {field: 'registrant', title: '计划登记人', width: 100}
+                , {field: 'registranttime', title: '计划登记时间', width: 150}
                 , {fixed: 'right',title: '操作', width: 240 ,rowspan: 2, align: 'center', toolbar: '#actschelistbar2'} //这里的toolbar值是模板元素的选择器
             ]]
-            ,id: 'testReload'
             ,page: true //开启分页,
-        });
-
-        //搜素
-        var $ = layui.$, active  = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                }, 'data');
-            }
-        };
-        $('.search1 .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
         });
 
         //监听工具条
         table.on('tool(actschlistfilter1)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+                layer.msg('生产计划编号：' + data.id + '<br>'
+                    +'生产计划名：' + data.name + '<br>'
+                    +'计划状态：' + data.state + '<br>'
+                    +'计划生产需时间：' + data.time + '<br>'
+                    +'生产开始时间：' + data.productiontime + '<br>'
+                    +'生产结束时间：' + data.endtiime + '<br>'
+                    +'计划登记人：' + data.registrant + '<br>'
+                    +'计划登记时间：' + data.registranttime + '<br>'
+                );
             } else if (obj.event === 'add') {
                 layer.open({
-                    title: '模拟实际生产数据填写',
+                    title: '实际生产数据填写',
                     type: 2,
                     content: 'http://localhost:8080/concrete/page/Actualproadd',
-                    area: ['1200px', '700px'],
+                    area: ['1030px', '600px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset:  ['20px', '50px']
+                    offset:  ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#actualadd").click();
+                        othis.find('input[name="notificationId"]').val(data.notificationId);
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="scheduleId"]').val(data.id);
+                    }
                 });
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/schedule/deleteSchedule",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         });
     });
 </script>
-
 </html>

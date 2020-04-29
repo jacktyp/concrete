@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="layui-fluid">
-    <form class="layui-form" action="">
+    <form class="layui-form">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">实验名称</label>
@@ -32,6 +32,8 @@
                            class="layui-input">
                 </div>
             </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">混凝土强度等级</label>
                 <div class="layui-input-inline">
@@ -48,39 +50,39 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">实验石头需求量</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="stone" lay-verify="title" autocomplete="off" placeholder="m³"
+                        <input type="text" name="stone" lay-verify="title" autocomplete="off" placeholder="kg"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">实验沙子需求量</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="sand" lay-verify="title" autocomplete="off" placeholder="m³"
+                        <input type="text" name="sand" lay-verify="title" autocomplete="off" placeholder="kg"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">实验水泥需求量</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="cement" lay-verify="title" autocomplete="off" placeholder="m³"
+                        <input type="text" name="cement" lay-verify="title" autocomplete="off" placeholder="kg"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">实验水需求量</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="water" lay-verify="title" autocomplete="off" placeholder="m³"
+                        <input type="text" name="water" lay-verify="title" autocomplete="off" placeholder="kg"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">实验添加剂需求量</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="additive" lay-verify="title" autocomplete="off" placeholder="m³"
+                        <input type="text" name="additive" lay-verify="title" autocomplete="off" placeholder="kg"
                                class="layui-input">
                     </div>
                 </div>
@@ -105,17 +107,17 @@
                     <label class="layui-form-label">实验日期</label>
                     <div class="layui-input-inline">
                         <input type="text" name="experimenttime" class="layui-input test-item" id="test6"
-                               placeholder="yyyy-MM-dd HH:mm:ss">
+                               placeholder="yyyy-MM-dd">
                     </div>
                 </div>
             </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
+        </div>
     </form>
 </div>
 </body>
@@ -126,7 +128,8 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
@@ -139,49 +142,30 @@
         //日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
             //,lang: 'en'
         });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
+//监听提交
+        form.on('submit(demo1)', function(data){
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/mixproportion/addMixproportion",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
                 }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
             });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
-
-        //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
             return false;
         });
 
     });
 </script>
-
-</body>
 </html>

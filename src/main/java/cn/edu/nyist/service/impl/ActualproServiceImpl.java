@@ -1,6 +1,7 @@
 package cn.edu.nyist.service.impl;
 
 import cn.edu.nyist.dao.ActualproMapper;
+import cn.edu.nyist.dao.NotificationMapper;
 import cn.edu.nyist.dao.ScheduleMapper;
 import cn.edu.nyist.model.*;
 import cn.edu.nyist.service.ActualproService;
@@ -31,6 +32,8 @@ public class ActualproServiceImpl implements ActualproService {
     private ContractService contractService;
     @Autowired
     private ScheduleMapper scheduleMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
     @Override
     public Integer dayOfproduction() {
         //当天
@@ -127,9 +130,25 @@ public class ActualproServiceImpl implements ActualproService {
     public void addActualproDTO(ActualproDTO actualproDTO) {
         Actualpro actualpro = new ActualproDTO().transferBack(actualproDTO);
         Integer scheduleId = actualpro.getScheduleId();
+        Integer notificationId = actualpro.getNotificationId();
         Schedule schedule = scheduleMapper.selectByPrimaryKey(scheduleId);
+        Notification notification = notificationMapper.selectByPrimaryKey(notificationId);
+        Integer stone = notification.getStoneamount();
+        Integer sand = notification.getSandamount();
+        Integer cement = notification.getCementamount();
+        Integer water = notification.getWateramount();
+        Integer additive = notification.getAdditiveamount();
+        Integer concreteamounton= notification.getConcreteamount();
         if (schedule.getState().equals("0")){
+            actualpro.setStoneamount(stone);
+            actualpro.setSandamount(sand);
+            actualpro.setAdditiveamount(additive);
+            actualpro.setCementamount(cement);
+            actualpro.setWateramount(water);
+            actualpro.setConcreteamount(concreteamounton);
             actualproMapper.insert(actualpro);
+            schedule.setState("1");
+            scheduleMapper.updateByPrimaryKey(schedule);
         }else{
             throw new RuntimeException("添加失败");
         }

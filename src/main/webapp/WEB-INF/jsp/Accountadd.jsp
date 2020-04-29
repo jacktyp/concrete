@@ -28,25 +28,19 @@
             <div class="layui-card">
                 <div class="layui-card-header">添加账户</div>
                 <div class="layui-card-body" pad15>
-                    <form class="layui-form" action="" method="post">
+                    <form class="layui-form">
                         <div class="layui-form" lay-filter="">
                             <div class="layui-form-item">
                                 <label class="layui-form-label">搜索选择框</label>
                                 <div class="layui-input-inline">
                                     <select name="userType" lay-verify="required" lay-search="">
-                                        <option value="1">超级管理员</option>
-                                        <option value="2">普通管理员</option>
+                                        <option value="1">管理员</option>
+                                        <option value="2">合同管理者</option>
+                                        <option value="3">生产管理者</option>
+                                        <option value="4">财务管理者</option>
                                     </select>
                                 </div>
                             </div>
-                                <%--<label class="layui-form-label">用户类型</label>
-                                <div class="layui-input-inline">
-                                    <select name="userType" lay-verify="">
-                                        <option value="1" selected>超级管理员</option>
-                                        <option value="2" disabled>普通管理员</option>
-                                    </select>
-                                </div>
-                                <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>--%>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">用户名</label>
@@ -60,7 +54,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" name="userPassword" lay-verify="title" autocomplete="off"class="layui-input">
                                 </div>
-                                <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+                                <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入</div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">真实姓名</label>
@@ -81,11 +75,10 @@
                                     <textarea name="userPostion" placeholder="请输入内容" class="layui-textarea"></textarea>
                                 </div>
                             </div>
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
-                                </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
                     </form>
@@ -99,9 +92,30 @@
     layui.use(['form', 'layedit', 'laydate'], function(){
         var form = layui.form
             ,layer = layui.layer
-            ,layedit = layui.layedit;
+            ,layedit = layui.layedit
+            ,$ = layui.$;
 
         form.render();
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/user/addUser",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
     })
 </script>
 </html>

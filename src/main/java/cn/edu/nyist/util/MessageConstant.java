@@ -25,4 +25,5 @@ public class MessageConstant {
     public static String getMessage(String partten,Object... params){
         return MessageFormat.format(partten, params);
     }
+
 }

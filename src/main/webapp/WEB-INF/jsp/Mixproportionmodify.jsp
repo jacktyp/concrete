@@ -28,7 +28,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">实验编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="" lay-verify="title" autocomplete="off" placeholder="ID"
+                    <input type="text" name="id" lay-verify="title" autocomplete="off" placeholder="ID"
                            class="layui-input">
                 </div>
             </div>
@@ -39,18 +39,37 @@
                            class="layui-input">
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-form-item">
+                <div class="layui-inline">
                 <label class="layui-form-label">混凝土强度等级</label>
                 <div class="layui-input-inline">
                     <input type="text" name="concretegrade" lay-verify="title" autocomplete="off"
                            placeholder="如：A15、A20、C10、C15..."
                            class="layui-input">
                 </div>
-
+                </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">强度对应配合比</label>
                     <div class="layui-input-inline">
                         <input type="text" name="mp" lay-verify="title" autocomplete="off" placeholder="1：1：0.9：0.2"
+                               class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <%--<div class="layui-form-item">
+                    <label class="layui-form-label">实验状态</label>
+                    <div class="layui-input-inline">
+                        <select name="state" lay-verify="required" lay-search="">
+                            <option value="0">合格</option>
+                            <option value="1">不合格</option>
+                        </select>
+                    </div>
+                </div>--%>
+                <div class="layui-inline">
+                    <label class="layui-form-label">实验状态</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="state" lay-verify="title" autocomplete="off" placeholder="请填写0/1"
                                class="layui-input">
                     </div>
                 </div>
@@ -113,7 +132,7 @@
                     <label class="layui-form-label">实验日期</label>
                     <div class="layui-input-inline">
                         <input type="text" name="experimenttime" class="layui-input test-item" id="test6"
-                               placeholder="yyyy-MM-dd HH:mm:ss">
+                               placeholder="yyyy-MM-dd">
                     </div>
                 </div>
             </div>
@@ -135,8 +154,9 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
-
+            , laydate = layui.laydate
+            , $ = layui.$;
+        form.render();
         //日期时间选择器
         laydate.render({
             elem: '#test5'
@@ -148,49 +168,32 @@
         //日期时间选择器
         laydate.render({
             elem: '#test6'
-            , type: 'datetime'
             , eventElem: '#test6-1'
             , trigger: 'click'
             //,lang: 'en'
         });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '请填写合同编号';
+//监听提交
+        form.on('submit(demo1)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/mixproportion/updateMixproportion",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
                 }
-            }
-            , pass: [
-                /^[\S]{6,12}$/
-                , '密码必须6到12位，且不能出现空格'
-            ]
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
             });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
-
-        //监听提交
-        form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
             return false;
         });
 
     });
 </script>
 
-</body>
 </html>

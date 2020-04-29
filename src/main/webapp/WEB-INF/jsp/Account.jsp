@@ -19,6 +19,7 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,12 +32,12 @@
 </body>
 
 <script type="text/html" id="accbar1">
-    <button type="button" onclick="addtest();" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button></div>
+    <button type="button" onclick="addtest();" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-add-1">添加用户</i></button>
 </script>
 <script type="text/html" id="accbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 <script type="text/javascript">
     function addtest() {
@@ -44,11 +45,11 @@
             title:'添加账户',
             type: 2,
             content: 'http://localhost:8080/concrete/page/Accountadd',
-            area: ['1200px', '600px'],
+            area: ['1000px', '600px'],
             moveOut: true,
             shade: [0.8, '#393D49'],
             scrollbar: false,
-            offset: ['20px', '50px']
+            offset: ['10px', '20px']
         })
     }
 </script>
@@ -59,19 +60,9 @@
         //展示已知数据
         table.render({
             elem: '#acc1'
-            //,url: '/test/testdata1.json'
-            //,count: total//数据总数，从服务端得到
+            ,url: 'http://localhost:8080/concrete/user/findAllUser'
             ,toolbar: '#accbar1' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-tips'
-            }]
-            ,method: 'post'
-            ,request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                ,limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
+            ,defaultToolbar: ['filter', 'print', 'exports']
             ,cols: [[ //标题栏
                 {field: 'id', title: 'ID', width: 120 ,rowspan: 2, sort: true}
                 , {field: 'userName', title: '用户名', width: 120 ,rowspan: 2}
@@ -83,59 +74,32 @@
                 , {field: 'userPostion', title: '用户职位信息', width: 100}
                 , {fixed: 'right',title: '操作', width: 240 ,rowspan: 2, align: 'center', toolbar: '#accbar2'} //这里的toolbar值是模板元素的选择器
             ]]
-            ,id: 'testReload'
             ,page: true //开启分页,
-            ,data:[{
-                "id":"1"
-                ,"userName":"2"
-                ,"userPassword":"3"
-                ,"userType":"1"
-                ,"realname":"5"
-                ,"userTelephone":"6"
-                ,"userState":"7"
-                ,"userPostion":"8"
-            }]
-        });
-
-        //搜素
-        var $ = layui.$, active  = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                }, 'data');
-            }
-        };
-        $('.search1 .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
         });
 
         //监听工具条
         table.on('tool(accfilter1)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+                layer.msg('用户编号：' + data.id + '<br>'
+                    +'用户名：' + data.userName + '<br>'
+                    +'用户类型：' + data.userType + '<br>'
+                    +'真实姓名：' + data.realname + '<br>'
+                    +'手机电话：' + data.userTelephone + '<br>'
+                    +'是否在线：' + data.userState + '<br>'
+                    +'用户职位信息：' + data.userPostion + '<br>');
             } else if (obj.event === 'edit') {
                 layer.open({
                     title: '账户信息修改',
                     type: 2,
                     content: 'http://localhost:8080/concrete/page/Accountmodify',
-                    area: ['1200px', '620px'],
+                    area: ['1000px', '620px'],
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset: ['20px', '50px'],
+                    offset: ['10px', '20px'],
                     success:function(layero, index){
-                        var othis = layero.find('iframe').contents().find("#accmodify").click();
+                        var othis = layero.find('iframe').contents().find("#usermodify").click();
                         othis.find('input[name="id"]').val(data.id);
                         othis.find('input[name="userName"]').val(data.userName);
                         othis.find('input[name="realname"]').val(data.realname);
@@ -149,9 +113,24 @@
             } else if (obj.event === 'edit') {
                 layer.alert('编辑行：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/user/deleteUser",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         });

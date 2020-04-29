@@ -19,6 +19,7 @@
     <script src="/layui/echarts.min.js"></script>
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 <body>
 <div class="layui-fluid">
@@ -42,22 +43,66 @@
 
 </div>
 </body>
-
-<script type="text/html" id="schbar1">
-    <div class="search1">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
-    </div>
-</script>
 <script type="text/html" id="schbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="add">添加生产计划</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="add"><i class="layui-icon layui-icon-add-circle"></i>添加生产计划</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
+            class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+<script type="text/html" id="buttonTpl">
+    {{#  if(d.remark == 1){ }}
+    <button class="layui-btn layui-btn-xs">完成</button>
+    {{#  } else { }}
+    <button class="layui-btn layui-btn-primary layui-btn-xs">未完成</button>
+    {{#  } }}
 </script>
 <script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'console']);
+    var stone, sand, cement, additive, vehicleName = new Array(), vehicleCount = new Array();
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/material/selectMaterial",
+        async: false,
+        success: function (data) {
+            //console.log(data);
+            var obj = data["msg"];
+            //console.log(obj);
+            var obj2 = JSON.parse(obj);
+            //console.log(obj2);
+            sand = obj2["sand"];
+            stone = obj2["stone"];
+            cement = obj2["cement"];
+            additive = obj2["additive"];
+            //console.log(stone+"  "+sand+"  "+cement+"  "+additive);
+        }
+    });
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/vehicle/selectVehicle",
+        async: false,
+        success: function (data1) {
+            //console.log(data1);
+            var obj = data1["msg"];
+            //console.log(obj);
+            var obj2 = JSON.parse(obj);
+            //console.log(obj2);
+            for(var i in obj2){
+                //表示遍历数组，而i表示的是数组的下标值，
+                //result[i]表示获得第i个json对象即JSONObject
+                //result[i]通过.字段名称即可获得指定字段的值
+                vehicleName[i] = obj2[i].vehicleName;
+                vehicleCount[i] =obj2[i].vehicleCount;
+                //console.log("vehicleName="+obj2[i].vehicleName);
+                //console.log("vehicleCount="+obj2[i].vehicleCount);
+            }
+            //console.log("vehicleName1="+vehicleName);
+            //console.log("vehicleCount1="+vehicleCount);
+        }
+    });
     var Sechart1 = echarts.init(document.getElementById('Sechart1'));
     var option1 = {
         title: {
@@ -81,7 +126,7 @@
             }
         },
         legend: {
-            data: ['石子', '沙','水泥','添加剂']
+            data: ['石子', '沙', '水泥', '添加剂']
         },
         xAxis: [
             {
@@ -95,29 +140,29 @@
         yAxis: [
             {
                 type: 'value',
-                name: '剩余量/m³'
+                name: '剩余量/10t'
             }
         ],
         series: [
             {
                 name: '石子',
                 type: 'bar',
-                data: [1000]
+                data: [stone/10000]
             },
             {
                 name: '沙',
                 type: 'bar',
-                data: [2000]
+                data: [sand/10000]
             },
             {
                 name: '水泥',
                 type: 'bar',
-                data: [2000]
+                data: [cement/10000]
             },
             {
                 name: '添加剂',
                 type: 'bar',
-                data: [100]
+                data: [additive/10000]
             }
         ]
 
@@ -147,7 +192,7 @@
             }
         },
         legend: {
-            data: ['车型1', '车型2', '车型3', '车型4' ]
+            data: ['车型1', '车型2', '车型3', '车型4']
         },
         xAxis: [
             {
@@ -161,29 +206,29 @@
         yAxis: [
             {
                 type: 'value',
-                name: '数量'
+                name: '数量/辆'
             }
         ],
         series: [
             {
                 name: '车型1',
                 type: 'bar',
-                data: [10]
+                data: [vehicleCount[0]]
             },
             {
                 name: '车型2',
                 type: 'bar',
-                data: [2]
+                data: [vehicleCount[1]]
             },
             {
                 name: '车型3',
                 type: 'bar',
-                data: [50]
+                data: [vehicleCount[2]]
             },
             {
                 name: '车型4',
                 type: 'bar',
-                data: [30]
+                data: [vehicleCount[3]]
             }
         ]
 
@@ -193,65 +238,45 @@
     layui.use(['table'], function () {
         var table = layui.table;
 
-        //展示已知数据
+//展示已知数据
         table.render({
             elem: '#sche1'
-            , url: '/test/testdata1.json'
-            , toolbar: '#schbar1' //开启头部工具栏，并为其绑定左侧模板
-            , defaultToolbar: ['filter', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                , layEvent: 'LAYTABLE_TIPS'
-                , icon: 'layui-icon-tips'
-            }]
-            , method: 'post'
-            , request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                , limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
+            , url: 'http://localhost:8080/concrete/notification/findAllNotificationByState'
+            //, toolbar: '#notbar1' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'print', 'exports']
             , cols: [[ //标题栏
                 {field: 'id', title: '通知单编号', width: 120, rowspan: 2, sort: true}
                 , {field: 'contractId', title: '合同编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'mixproportionId', title: '配合比编号', width: 120, rowspan: 2, sort: true}
-                , {field: 'Notification_stoneamount', title: '所需石头总量\kg', width: 100}
-                , {field: 'Notification_sandamount', title: '所需沙子总量\kg', width: 100}
-                , {field: 'Notification_cementamount', title: '所需水泥总量\kg', width: 100}
-                , {field: 'Notification_wateramount', title: '所需水总量\kg', width: 100}
-                , {field: 'Notification_additiveamount', title: '所需添加剂总量\kg', width: 100}
-                , {fixed: 'right', title: '操作', width: 240, rowspan: 2, align: 'center', toolbar: '#schbar2'} //这里的toolbar值是模板元素的选择器
+                , {field: 'mixproportionId', title: '状态',templet: '#buttonTpl', width: 120, rowspan: 2}
+                , {field: 'concreteamount', title: '混凝土总量\m³', width: 100}
+                , {field: 'stoneamount', title: '所需石头总量\kg', width: 100}
+                , {field: 'sandamount', title: '所需沙子总量\kg', width: 100}
+                , {field: 'cementamount', title: '所需水泥总量\kg', width: 100}
+                , {field: 'wateramount', title: '所需水总量\kg', width: 100}
+                , {field: 'additiveamount', title: '所需添加剂总量\kg', width: 100}
+
+                , {field: 'registrant', title: '通知单登记人', width: 120, rowspan: 2}
+                , {field: 'registranttime', title: '通知单登记日期', width: 210, rowspan: 2}
+                , {fixed: 'right', title: '操作', width: 300, rowspan: 2, align: 'center', toolbar: '#schbar2'} //这里的toolbar值是模板元素的选择器
             ]]
-            ,id: 'testReload'
+            , id: 'testReload'
             , page: true //开启分页,
             , limit: 10
         });
-        //搜素
-        var $ = layui.$, active  = {
-            reload: function(){
-                var demoReload = $('#demoReload');
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                }, 'data');
-            }
-        };
-        $('.search1 .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
 
-        //监听工具条
+//监听工具条
         table.on('tool(sche2)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
-            } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                layer.msg('通知单编号：' + data.id + '<br>'
+                    + '混凝土总量：' + data.concreteamount + '<br>'
+                    + '所需石头总量：' + data.stoneamount + '<br>'
+                    + '所需沙子总量：' + data.sandamount + '<br>'
+                    + '所需水泥总量：' + data.cementamount + '<br>'
+                    + '所需水总量：' + data.wateramount + '<br>'
+                    + '所需添加剂总量：' + data.additiveamount + '<br>'
+                    + '通知单登记人：' + data.registrant + '<br>'
+                    + '通知单登记日期：' + data.registranttime + '<br>');
             } else if (obj.event === 'add') {
                 layer.msg('ID：' + data.Contract_id + ' 的查看操作');
                 layer.open({
@@ -262,12 +287,32 @@
                     moveOut: true,
                     shade: [0.8, '#393D49'],
                     scrollbar: false,
-                    offset:['20px', '50px']
+                    offset: ['20px', '50px'],
+                    success:function(layero, index){
+                        var othis = layero.find('iframe').contents().find("#scheduleadd1").click();
+                        othis.find('input[name="contractId"]').val(data.contractId);
+                        othis.find('input[name="notificationId"]').val(data.id);
+                    }
                 });
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/notification/deleteNotification",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         });

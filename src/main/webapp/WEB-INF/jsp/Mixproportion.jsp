@@ -19,6 +19,7 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 
 <body>
@@ -36,18 +37,13 @@
 
 <script type="text/html" id="mixbar1">
     <div class="search1">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
-        <button type="button" onclick="addtest();" class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>
+        <button type="button" onclick="addtest();" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-add-1">添加实验记录</i></button>
     </div>
 </script>
 <script type="text/html" id="mixbar2">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-about"></i>详情</a>
+    <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 <script type="text/javascript">
     function addtest() {
@@ -55,13 +51,20 @@
             title: '添加实验',
             type: 2,
             content: 'http://localhost:8080/concrete/page/Mixproportionadd',
-            area: ['1200px', '600px'],
+            area: ['1000px', '600px'],
             moveOut: true,
             shade: [0.8, '#393D49'],
             scrollbar: false,
-            offset:  ['20px', '50px']
+            offset:  ['10px', '20px']
         })
     }
+</script>
+<script type="text/html" id="buttonTpl">
+    {{#  if(d.state == 1){ }}
+    <button class="layui-btn layui-btn-xs">合格</button>
+    {{#  } else { }}
+    <button class="layui-btn layui-btn-primary layui-btn-xs">不合格</button>
+    {{#  } }}
 </script>
 <script>
     layui.use(['table'], function () {
@@ -70,61 +73,44 @@
         //展示已知数据
         table.render({
             elem: '#mix1'
-            //,url: '/test/testdata1.json'
-            //,count: total//数据总数，从服务端得到
+            ,url: 'http://localhost:8080/concrete/mixproportion/findAllMixproportion'
             ,toolbar: '#mixbar1' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-tips'
-            }]
-            ,method: 'post'
-            ,request: {
-                pageName: 'page' //页码的参数名称，默认：page
-                ,limitName: 'limit' //每页数据量的参数名，默认：limit
-            }
+            ,defaultToolbar: ['filter', 'print', 'exports']
             ,cols: [[ //标题栏
                 {field: 'id', title: 'ID', width: 120 ,rowspan: 2, sort: true}
                 , {field: 'name', title: '实验名称', width: 120 ,rowspan: 2}
                 , {field: 'concretegrade', title: '混凝土等级', width: 120 ,rowspan: 2}
                 , {field: 'mp', title: '混泥土配合比', width: 120 ,rowspan: 2}
-                , {field: 'state', title: '是否合格',templet: '#switchTpl', width: 100}
-                /* , {align: 'center', title: '所需各种原材料数量', colspan: 5} //colspan即横跨的单元格数，这种情况下不用设置field和width
-             ], [*/
+                , {field: 'state', title: '是否合格',templet: '#buttonTpl', width: 100}
                 , {field: 'stone', title: '每方混凝土的石头量\kg', width: 100}
                 , {field: 'sand', title: '每方混凝土的沙子量\kg', width: 100}
                 , {field: 'cement', title: '每方混凝土的水泥量\kg', width: 100}
                 , {field: 'water', title: '每方混凝土的水量\kg', width: 100}
                 , {field: 'additive', title: '每方混凝土的添加剂量\kg', width: 100}
                 , {field: 'remark', title: '备注', width: 100}
-
                 , {field: 'experiment', title: '实验人', width: 120,unresize: true,rowspan: 2}
                 , {field: 'experimenttime', title: '实验日期', width: 210 ,rowspan: 2}
                 , {fixed: 'right',title: '操作', width: 240 ,rowspan: 2, align: 'center', toolbar: '#mixbar2'} //这里的toolbar值是模板元素的选择器
             ]]
             ,page: true //开启分页,
-            ,data:[{
-                "id":"1"
-                ,"name":"1"
-                ,"concretegrade":"1"
-                ,"mp":"1"
-                ,"state":"1"
-                ,"stone":"1"
-                ,"sand":"1"
-                ,"cement":"1"
-                ,"water":"1"
-                ,"additive":"1"
-                ,"remark":"1"
-                ,"experiment":"1"
-
-            }]
         });
 
         //监听工具条
         table.on('tool(mixfilter1)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                layer.msg('ID：' + data.Contract_id + ' 的查看操作');
+                layer.msg('实验编号：' + data.id + '<br>'
+                    +'实验名称：' + data.name + '<br>'
+                    +'混凝土等级：' + data.concretegrade + '<br>'
+                    +'混泥土配合比：' + data.mp + '<br>'
+                    +'每方混凝土的石头量：' + data.stone + '<br>'
+                    +'每方混凝土的沙子量：' + data.sand + '<br>'
+                    +'每方混凝土的水泥量：' + data.cement + '<br>'
+                    +'每方混凝土的水量：' + data.water + '<br>'
+                    +'每方混凝土的添加剂量：' + data.additive + '<br>'
+                    +'备注：' + data.remark + '<br>'
+                    +'实验人：' + data.experiment + '<br>'
+                    +'实验日期：' + data.experimenttime + '<br>');
             }  else if (obj.event === 'edit') {
                 layer.open({
                     title: '实验信息修改',
@@ -153,9 +139,24 @@
                     }
                 });
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                layer.confirm('真的删除么？', function (index) {
+                    $.ajax({
+                        url: "http://localhost:8080/concrete/mixproportion/deleteMixproportion",
+                        type: "POST",
+                        data: {id:data.id},
+                        success: function (msg) {
+                            if (msg != null) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
                 });
             }
         });

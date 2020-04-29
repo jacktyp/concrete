@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -116,5 +118,52 @@ public class UserController {
             return LayuiUtil.newFaild("删除失败");
         }
     }
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping(value = "/backPageByState",method = RequestMethod.GET)
+    //@ResponseBody
+    public String backPageByState(Integer state,String userName,String password){
+            User user = userService.findUser(userName,password);
+            if (user != null){
+                if ("1".equals(state)){
+                    return "Functionalpage";
+                } else if ("2".equals(state)) {
+                    return "Functionalpage1";
+                }else if ("3".equals(state)) {
+                    return "Functionalpage2";
+                }else if ("4".equals(state)) {
+                    return "Functionalpage3";
+                }else if ("5".equals(state)) {
+                    return "Functionalpage4";
+                }
+            }
+        return "loginFail";
+    }
+
+    //登录验证
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public LayuiUtil login(String userName,String userPassword){
+            User user = userService.findUser(userName,userPassword);
+            if (user != null){
+                if ("1".equals(user.getUserType())){
+                    return LayuiUtil.newSuccess("1");
+                }else if("2".equals(user.getUserType())){
+                    return LayuiUtil.newSuccess("2");
+                }else if("3".equals(user.getUserType())){
+                    return LayuiUtil.newSuccess("3");
+                }else if("4".equals(user.getUserType())){
+                    return LayuiUtil.newSuccess("4");
+                }else{
+                    return LayuiUtil.newFaild("登录失败");
+                }
+            }else{
+                return LayuiUtil.newFaild("登录失败");
+            }
+    }
+
 
 }

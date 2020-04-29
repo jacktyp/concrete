@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/layui/style/admin.css">
     <script src="/layui/echarts.min.js"></script>
     <script src="/layui/layui.js"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 <body>
 <div class="layui-fluid">
@@ -51,6 +52,75 @@
 </div>
 </body>
 <script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'console']);
+
+    var date,listState1,listState2,listState3,listState4;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/procure/selectProcure",
+        async: false,
+        success: function(data){
+            //console.log(data);
+            var obj = data["msg"];
+           // console.log(obj);
+            var obj2 = JSON.parse(obj);
+            //console.log(obj2);
+            date = obj2["listData"];
+            listState1 = obj2["listState1"];
+            listState2 = obj2["listState2"];
+            listState3 = obj2["listState3"];
+            listState4 = obj2["listState4"];
+            /*console.log(date);
+            console.log(listState1);
+            console.log(listState2);
+            console.log(listState3);
+            console.log(listState4);*/
+       }
+    });
+    var listData,listPrice;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/transportation/selectTransport",
+        async: false,
+        success: function(data){
+            /*console.log(data);
+            var obj = data["data"];
+            console.log(obj);
+            var obj2 = JSON.parse(obj);
+            //console.log(obj2);*/
+            //console.log(data);
+            var obj = data["msg"];
+            //console.log(obj);
+            var obj2 = JSON.parse(obj);
+            //console.log(obj2);
+            listData = obj2["listData"];
+            listPrice = obj2["listPrice"];
+        }
+    });
+    var dataList,expenditureList,profitList,incomeList;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/concrete/financestic/findAllActualpro",
+        async: false,
+        success: function(data){
+            console.log(data);
+            /*var obj = data["msg"];
+            console.log(obj);*/
+            var obj = data["msg"];
+            console.log(obj);
+            var obj2 = JSON.parse(obj);
+            console.log(obj2);
+            dataList = obj2["dataList"];
+            expenditureList = obj2["expenditureList"];
+            profitList = obj2["profitList"];
+            incomeList = obj2["incomeList"];
+        }
+    });
+
     var fechart1 = echarts.init(document.getElementById('fechart1'));
     var option1 = {
         title: {
@@ -72,7 +142,7 @@
             type: 'category',
             name: '日期',
             boundaryGap: false,
-            data: ['2019.1.1', '2019.1.2', '2019.1.3', '2019.1.4', '2019.1.5', '2019.1.6', '2019.1.7','2019.1.8','2019.1.9','2019.12.31']
+            data: date
         },
         yAxis: {
             type: 'value',
@@ -84,7 +154,7 @@
                 type: 'line',
                 stack: '总量',
                 seriesLayoutBy: 'row',
-                data: [2000, 0, 12, 500, 0, 1000, 0,0,0,0]
+                data: listState1
 
             },
             {
@@ -92,19 +162,19 @@
                 type: 'line',
                 color: '#00FF00',
                 seriesLayoutBy: 'row',
-                data: [500, 500, 500, 500, 500, 480, 500, 500, 480, 500]
+                data: listState2
             },
             {
                 name: '水泥支出',
                 type: 'line',
                 seriesLayoutBy: 'row',
-                data: [350, 390, 333, 400, 412, 450, 0,230,233,500]
+                data: listState3
             },
             {
                 name: '添加剂支出',
                 type: 'line',
                 seriesLayoutBy: 'row',
-                data: [350, 390, 1000, 400, 412, 450, 0,230,233,500]
+                data: listState4
             }
         ]
     };
@@ -119,7 +189,7 @@
             trigger: 'axis'
         },
         legend: {
-            data: ['车型1支出','车型2支出', '车型3支出','车型4支出' ]
+            data: ['车辆支出' ]
         },
         grid: {
             left: '3%',
@@ -131,7 +201,7 @@
             type: 'category',
             name: '日期',
             boundaryGap: false,
-            data: ['2019.1.1', '2019.1.2', '2019.1.3', '2019.1.4', '2019.1.5', '2019.1.6', '2019.1.7','2019.1.8','2019.1.9','2019.12.31']
+            data: listData
         },
         yAxis: {
             type: 'value',
@@ -143,27 +213,8 @@
                 type: 'line',
                 stack: '总量',
                 seriesLayoutBy: 'row',
-                data: [2000, 0, 12, 500, 0, 1000, 0,0,0,0]
+                data: listPrice
 
-            },
-            {
-                name: '车型2支出',
-                type: 'line',
-                color: '#00FF00',
-                seriesLayoutBy: 'row',
-                data: [500, 500, 500, 500, 500, 480, 500, 500, 480, 500]
-            },
-            {
-                name: '车型3支出',
-                type: 'line',
-                seriesLayoutBy: 'row',
-                data: [350, 390, 333, 400, 412, 450, 0,230,233,500]
-            },
-            {
-                name: '车型4支出',
-                type: 'line',
-                seriesLayoutBy: 'row',
-                data: [350, 390, 333, 400, 1000, 450, 0,230,233,500]
             }
         ]
     };
@@ -200,7 +251,7 @@
                 axisTick: {
                     show: false
                 },
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data: dataList
             }
         ],
         series: [
@@ -211,7 +262,7 @@
                     show: true,
                     position: 'inside'
                 },
-                data: [200, 170, 240, 244, 200, 220, 210]
+                data: profitList
             },
             {
                 name: '收入',
@@ -220,7 +271,7 @@
                 label: {
                     show: true
                 },
-                data: [320, 302, 341, 374, 390, 450, 420]
+                data: incomeList
             },
             {
                 name: '支出',
@@ -230,7 +281,7 @@
                     show: true,
                     position: 'left'
                 },
-                data: [-120, -132, -101, -134, -190, -230, -210]
+                data: expenditureList
             }
         ]
     };

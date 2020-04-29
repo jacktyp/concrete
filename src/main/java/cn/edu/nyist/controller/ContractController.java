@@ -69,7 +69,6 @@ public class ContractController {
         }
     }
 
-
     /**
      * 查询所有合同
      * @return

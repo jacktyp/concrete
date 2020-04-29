@@ -4,6 +4,7 @@ import cn.edu.nyist.model.Material;
 import cn.edu.nyist.service.MaterialService;
 import cn.edu.nyist.util.LayuiUtil;
 import cn.edu.nyist.util.MessageConstant;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class MaterialController {
             if (CollectionUtils.isEmpty(materialServiceOne)){
                 return LayuiUtil.newSuccess(new Material().toString());
             }
-            return LayuiUtil.newSuccess(materialServiceOne.get(0).toString());
+            return LayuiUtil.newSuccess(JSON.toJSONString(materialServiceOne.get(0)));
         }catch (Exception e){
             logger.error(MessageConstant.getMessage(MessageConstant.QUERYFAILED));
             return LayuiUtil.newFaild(MessageConstant.getMessage(MessageConstant.QUERYFAILED));

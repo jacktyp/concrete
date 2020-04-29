@@ -20,10 +20,11 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/jquery.min.js"></script>
 </head>
 <body>
-<div class="layui-fluid">
-    <form class="layui-form" action="/concrete/user1/addUser" method="post">
+<div class="layui-fluid" id="noticeadd" >
+    <form class="layui-form" action="/concrete/user1/addUser" method="post" lay-filter="formTest">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">合同编号</label>
@@ -34,30 +35,56 @@
             </div>
         </div>
 
-
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">混凝土计划需求量</label>
+                <label class="layui-form-label">混凝土需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="concreteamount" lay-verify="title" autocomplete="off" placeholder="m³"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">混凝土强度等级</label>
                 <div class="layui-input-inline">
-                    <%--<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="如：A15、A20、C10、C15..."
-                           class="layui-input">--%>
-                    <select name="modules" lay-verify="title" lay-search="">
-                        <option value="">直接选择或搜索选择</option>
-                        <option value="1">A10</option>
-                        <option value="2">A12</option>
-                        <option value="3">A20</option>
-                        <option value="5">C15</option>
-                        <option value="6">C20</option>
-                        <option value="7">C25</option>
-                        <option value="8">C30</option>
-                    </select>
+                    <input type="text" name="mixproportionId" lay-verify="title" autocomplete="off" placeholder="如：C20、C25..."
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">石头总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="stoneamount" lay-verify="title" autocomplete="off" placeholder="kg"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">沙子总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="sandamount" lay-verify="title" autocomplete="off" placeholder="kg"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">水泥总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="cementamount" lay-verify="title" autocomplete="off" placeholder="kg"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">添加剂总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="additiveamount" lay-verify="title" autocomplete="off" placeholder="kg"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">水总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="wateramount" lay-verify="title" autocomplete="off" placeholder="kg"
+                           class="layui-input">
                 </div>
             </div>
         </div>
@@ -74,7 +101,7 @@
                 <label class="layui-form-label">通知单添加日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="registranttime" class="layui-input test-item" id="test6"
-                           placeholder="yyyy-MM-dd HH:mm:ss">
+                           placeholder="yyyy-MM-dd">
                 </div>
             </div>
         </div>
@@ -102,7 +129,6 @@
             elem: '#test5'
             , eventElem: '#test5-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
 
         //日期时间选择器
@@ -110,8 +136,39 @@
             elem: '#test6'
             , eventElem: '#test6-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            $.ajax({
+                url: "http://localhost:8080/concrete/notification/addNotification",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        /*var mixproportionId = data.field.mixproportionId;
+        //var mixproportionId2=Request.Form("mixproportionId");
+        //var mixproportionId2 = Ext.get('mixproportionId');
+        console.log("mixproportionId2="+mixproportionId);
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/concrete/mixproportion/selectMixproportion",
+            data:  {id:mixproportionId},
+            async: false,
+            success: function(data1){
+                console.log(data1);
+            }
+        });*/
     });
 </script>
 

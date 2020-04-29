@@ -17,7 +17,7 @@ public interface MixproportionService {
      * @param id
      * @return
      */
-    MixproportionDTO getMixproportion(Integer id) throws Exception;
+    List<MixproportionDTO> getMixproportion() throws Exception;
 
     /**
      * 查询所有配合比

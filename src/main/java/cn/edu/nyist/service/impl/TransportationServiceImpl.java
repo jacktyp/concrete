@@ -70,6 +70,7 @@ public class TransportationServiceImpl implements TransportationService {
             TransportationBackList transportationBackList = new TransportationBackList();
             transportationBackList.setDate(time);
             transportationBackList.setPrice(String.valueOf(allPrice));
+            transportationBackListList.add(transportationBackList);
         }
         return transportationBackListList;
     }

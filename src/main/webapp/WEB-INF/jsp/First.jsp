@@ -97,13 +97,13 @@
                 <div class="layui-row">
                     <div class="layui-col-sm8 layui-carousel" id="c1">
                         <div carousel-item="">
-                            <div id="echart1" style="width: 700px;height:450px;"></div>
+                            <div id="echart1" style="width: 1200px;height:400px;"></div>
                             <%--<div id="echart2" style="width: 800px;height:450px;"></div>--%>
-                            <div id="echart3" style="width: 700px;height:450px;"></div>
+                            <div id="echart3" style="width: 1200px;height:400px;"></div>
                         </div>
 
                     </div>
-                    <div class="layui-col-sm4">
+                <%--    <div class="layui-col-sm4">
                         <div class="layuiadmin-card-list">
                             <p class="layuiadmin-normal-font">月新增</p>
                             <span>同上期增长</span>
@@ -118,14 +118,14 @@
                                 <div id="pp2" class="layui-progress-bar"></div>
                             </div>
                         </div>
-                        <%--<div class="layuiadmin-card-list">
+                        &lt;%&ndash;<div class="layuiadmin-card-list">
                             <p class="layuiadmin-normal-font">月收入</p>
                             <span>同上期增长</span>
                             <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="p3">
                                 <div class="layui-progress-bar" lay-percent="0%"></div>
                             </div>
-                        </div>--%>
-                    </div>
+                        </div>&ndash;%&gt;
+                    </div>--%>
                 </div>
             </div>
         </div>
@@ -145,9 +145,9 @@
         url: "http://localhost:8080/concrete/homePage/dataList",
         async: false,
         success: function(data){
-            console.log(data);
+            //console.log(data);
             var obj = data["msg"];
-            console.log(obj);
+            //console.log(obj);
             var obj2 = JSON.parse(obj);
             /**
              * 生产量
@@ -202,8 +202,8 @@
         //建造实例
         carousel.render({
             elem: '#c1'
-            ,width: '700px' //设置容器宽度
-            ,height: '505px'
+            ,width: '1200px' //设置容器宽度
+            ,height: '470px'
             ,arrow: 'always' //始终显示箭头
         });
     });
@@ -328,10 +328,11 @@
 
     };
     echart2.setOption(option2);*/
-
     var addressname=new Array(),addressfre=new Array(),address=[];
     addressname=Object.keys(addressDistribution);
     addressfre=Object.values(addressDistribution);
+    //console.log(addressname);
+    //console.log(addressfre);
     for(i=0;i<addressname.length;i++){//进行饼状图数据格式转换
         var json1={};
         json1["name"]=addressname[i];

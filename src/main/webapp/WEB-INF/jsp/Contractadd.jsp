@@ -24,8 +24,7 @@
 <body>
 <div class="layui-fluid">
     <h2 style="color:#000000;padding: 20px">合同录入</h2>
-    <form class="layui-form" action="/concrete/contract/selectContract" method="post">
-
+    <form class="layui-form" ><%--action="/concrete/contract/addContract" method="post"--%>
         <div class="layui-form-item">
             <div class="layui-item">
                 <label class="layui-form-label">客户名称</label>
@@ -35,7 +34,6 @@
                 </div>
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-item">
                 <label class="layui-form-label">客户地址</label>
@@ -46,7 +44,6 @@
                 </div>
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">联系人</label>
@@ -65,7 +62,6 @@
                 <div class="layui-form-mid layui-word-aux">请填写11位手机号码</div>
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">混凝土计划需求量</label>
@@ -90,22 +86,13 @@
                     </div>
                 </div>
             </div>
-
             <div class="layui-inline">
                 <label class="layui-form-label">合同签订日期</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="date1" lay-verify="date" class="layui-input test-item" id="test5"
+                    <input type="text" name="time" lay-verify="date" class="layui-input test-item" id="test5"
                            placeholder="yyyy-MM-dd">
                 </div>
             </div>
-
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">备注</label>
-                <div class="layui-input-block">
-                    <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
-                </div>
-            </div>
-
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">合同录入人</label>
@@ -125,12 +112,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">录入</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
@@ -141,7 +127,8 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
@@ -154,6 +141,25 @@
             elem: '#test6'
             , eventElem: '#test6-1'
             , trigger: 'click'
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            /*console.log(data.field);*/
+            $.ajax({
+                url: "http://localhost:8080/concrete/contract/addContract",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
         });
     });
 </script>

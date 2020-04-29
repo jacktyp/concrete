@@ -20,27 +20,42 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script src="/layui/layui.js" charset="utf-8"></script>
     <script src="/layui/layui.all.js" charset="utf-8"></script>
+    <script src="/layui/layui.all.js" charset="utf-8"></script>
 </head>
 <body>
 <div class="layui-fluid" id="notmodify">
-    <form class="layui-form" action="/concrete/user1/addUser" method="post">
+    <form class="layui-form">
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <input type="hidden" name="id" lay-verify="title" autocomplete="off" placeholder=""
+                   class="layui-input">
+            <input type="hidden" name="contractId" lay-verify="title" autocomplete="off" placeholder=""
+                   class="layui-input">
+            <%--<div class="layui-inline">
                 <label class="layui-form-label">通知单编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="" lay-verify="title" autocomplete="off" placeholder=""
+                    <input type="hidden" name="id" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">合同编号</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="contractId" lay-verify="title" autocomplete="off" placeholder=""
+                    <input type="hidden" name="contractId" lay-verify="title" autocomplete="off" placeholder=""
+                           class="layui-input">
+                </div>
+            </div>--%>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">混凝土总量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="concreteamount" lay-verify="title" autocomplete="off" placeholder="m³"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">配合比编号</label>
+                <label class="layui-form-label">状态</label>
                 <div class="layui-input-inline">
                     <input type="text" name="mixproportionId" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
@@ -50,44 +65,37 @@
 
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">计划石头需求量</label>
+                <label class="layui-form-label">石头需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="stoneamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="stoneamount" lay-verify="title" autocomplete="off" placeholder="kg"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划沙子需求量</label>
+                <label class="layui-form-label">沙子需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="sandamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="sandamount" lay-verify="title" autocomplete="off" placeholder="kg"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划水泥需求量</label>
+                <label class="layui-form-label">水泥需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="cementamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="cementamount" lay-verify="title" autocomplete="off" placeholder="kg"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划水需求量</label>
+                <label class="layui-form-label">水需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="wateramount" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="wateramount" lay-verify="title" autocomplete="off" placeholder="kg"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">计划添加剂需求量</label>
+                <label class="layui-form-label">添加剂需求量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="additiveamount" lay-verify="title" autocomplete="off" placeholder="m³"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">计划混凝土总量</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="concreteamount" lay-verify="title" autocomplete="off" placeholder="m³"
+                    <input type="text" name="additiveamount" lay-verify="title" autocomplete="off" placeholder="kg"
                            class="layui-input">
                 </div>
             </div>
@@ -126,14 +134,14 @@
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
-            , laydate = layui.laydate;
+            , laydate = layui.laydate
+            , $ = layui.$;
 
         //日期时间选择器
         laydate.render({
             elem: '#test5'
             , eventElem: '#test5-1'
             , trigger: 'click'
-            //,lang: 'en'
         });
 
         //日期时间选择器
@@ -141,7 +149,27 @@
             elem: '#test6'
             , eventElem: '#test6-1'
             , trigger: 'click'
-            //,lang: 'en'
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field);
+            $.ajax({
+                url: "http://localhost:8080/concrete/notification/updateNotification",
+                type: "POST",
+                data: data.field,
+                success: function (msg) {
+                    if (msg != null) {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
         });
     });
 </script>
